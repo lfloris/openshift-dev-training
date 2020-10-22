@@ -39,8 +39,16 @@
 
 ## Day 2
 **Develop and deploy apps on OpenShift**
+- Introduction to OpenShift Application Resources
+	- Application High Availability with Deployments
+	- Application Configurations with ConfigMaps
+	- Application sensitive data with Secrets
+	- Exposing the application with services and routes
 - OpenShift Application Deployments
 	- Deploying applications on OpenShift
+	- [DEMO] Creating an OpenShift application
+	- [LAB] Creating an OpenShift application
+	- [LAB] Advanced OpenShift application - Wordpress + MySQL
     - OpenShift Storage for Applications
         - Persistent Storage Recap
     	- [LAB] Creating a database with user provisioned storage
