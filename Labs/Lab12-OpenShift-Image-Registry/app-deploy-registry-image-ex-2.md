@@ -12,7 +12,7 @@ Once you're logged in, create a new project for this exercise.
 $ oc new-project lab12-image-reg-deploy
 ```
 
-Using the application source code in [jpetstore](jpetstore/), create a front end and a backend application. 
+Using the application source code in [jpetstore](jpetstore/), create a frontend and a backend application. 
 
 ## Creating Images
 The frontend Dockerfile is in the root [jpetstore](jpetstore/) directory, and the backend Dockerfile is in the [jpetstore/db](jpetstore/db/) directory. Create new container images based on this code and push these images to the OpenShift image registry.
