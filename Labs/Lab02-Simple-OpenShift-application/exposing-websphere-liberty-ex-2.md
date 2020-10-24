@@ -9,16 +9,20 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab02-was
+$ oc new-project lab02-was
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Create a new local directory for this lab, and change to it.
 
 ```
 $ mkdir -p Lab02/was
 $ cd Lab02/was
+```
+
+Apply a labels to one of the cluster nodes. We'll use this labels to make the application target specific nodes later on.
+
+```
+oc label node master1 apps=was
 ```
 
 Create a file called `ws-deployment.yaml` with the following data to define the Deployment specification
@@ -93,7 +97,7 @@ resources:
     memory: 512Mi
 ```
 
-Edit your current deployment using `oc edit deployment websphere-liberty-app`. This wll open an editor in the termiinal, similar to `vi`.
+Edit your current deployment using `oc edit deployment websphere-liberty-app`. This wll open an editor in the terminal, similar to `vi`.
 
 Add the resource defined above to the `spec.template.spec.containers.[websphere-liberty-app]` so it looks similar to the following
 
@@ -175,14 +179,14 @@ NAME                                     READY   STATUS    RESTARTS   AGE    IP 
 websphere-liberty-app-66c9f5db46-rz7tt   1/1     Running   0          8m3s   10.254.15.122   worker1   <none>           <none>
 ```
 
-It's currently running on worker1, since we haven't told the OpenShift Scheduler where we want it to run. So now we'll edit the application to run only on nodes will the label `app=was`.
+It's currently running on worker1, since we haven't told the OpenShift Scheduler where we want it to run. So now we'll edit the application to run only on nodes will the label `apps=was`.
 
 Edit the `websphere-liberty-app` Deployment to add the below snippet to the `spec.template.spec.containers` field. 
 
 
 ```
 nodeSelector:
-  app: was
+  apps: was
 ```
 
 The `nodeSelector` should start in-line with the `volumes` section, as given below
@@ -202,7 +206,7 @@ spec:
       - name: websphere-liberty-app
 <additional content>
       nodeSelector:
-        app: was
+        apps: was
       volumes:
         - name: was-persistence
           emptyDir: {}
@@ -210,7 +214,7 @@ spec:
 
 Save and close the editor.
 ​
-After some time, the pod should be moved to the nodes labelled with `app=was`.
+After some time, the pod should be moved to the nodes labelled with `apps=was`.
 
 ```
 $ oc get pods -o wide
@@ -229,7 +233,7 @@ So now that the WebSphere application is deployed, we need to expose it so we ca
 1. A Service
 2. A Route to the Service
 ​
-The Service will expose the specified container port and provide it with an IP and DNS name in the Service IP range. In this instance, we only have one pod but Services become more important when you have multiple replicas of an application and you expect the traffic sent to mulitple replicas to be properly load balanced and received by all relevant pods.
+The Service will expose the specified container port and provide it with an IP and DNS name in the Service IP range. In this instance, we only have one pod but Services become more important when you have multiple replicas of an application and you expect the traffic sent to multiple replicas to be properly load balanced and received by all relevant pods.
 
 Create a file called `ws-svc.yaml` with the following content
 ​
@@ -273,7 +277,7 @@ You can view the new Route using the following command
 ```
 oc get routes
 NAME                HOST/PORT                                              PATH   SERVICES            PORT   TERMINATION   WILDCARD
-websphere-liberty   websphere-liberty-was-test.apps.ocp4.os.fyre.ibm.com          websphere-liberty   9080                 None
+websphere-liberty   websphere-liberty-lab02-was.apps.ocp4.os.fyre.ibm.com          websphere-liberty   9080                 None
 ```
 
 In your web browser, navigate to the URL given in the HOST/PORT section. This should bring up the WebSphere landing page.
@@ -286,8 +290,8 @@ service "websphere-liberty" deleted
 route.route.openshift.io "websphere-liberty" deleted
 deployments.extensions "websphere-liberty-app" deleted
 
-$ oc delete project userXX-lab02-was
-project.project.openshift.io "userXX-lab02-was" deleted
+$ oc delete project lab02-was
+project.project.openshift.io "lab02-was" deleted
 ```
 
 Lab complete.

@@ -10,14 +10,14 @@ This lab will be executed in three parts
 
 ## Part 1 - Create the Project
 
-First we need to log in with a non-admin role and create a project similar to `userXX-lab08-operator`, replacing `userXX` with your user ID.
+First we need to log in with a non-admin role and create a project similar to `lab08-operator`.
 
 Log into OpenShift using the CLI, as described [here](../Getting-started/log-in-to-openshift.md).
 
 Create the project
 
 ```
-$ oc new-project userXX-lab08-operator
+$ oc new-project lab08-operator
 ```
 
 ## Part 2 - Install the Operator
@@ -58,7 +58,7 @@ This may take a short amount of time, so while we wait we can now log out of the
 
 Now log back into the Web Console as the developer, using your own user ID as described [here](../Getting-started/log-in-to-openshift.md).
 
-From the project selection box, select the project you created at the start of this lab, for example, `user99-lab08-operators`. In the navigation pane, select Operators > Installed Operators, then select the PostgreSQL Operator. You may need to use the search box if you have a lot of Operators installed to this project.
+From the project selection box, select the project you created at the start of this lab, for example, `lab08-operators`. In the navigation pane, select Operators > Installed Operators, then select the PostgreSQL Operator. You may need to use the search box if you have a lot of Operators installed to this project.
 
 ![](img/select-postgresql-operator.png)
 
@@ -72,8 +72,8 @@ This page will allow you to create a new instance of a PostgreSQL database. The 
 apiVersion: postgresql.dev4devs.com/v1alpha1
 kind: Database
 metadata:
-  name: user99-database
-  namespace: user99-lab08-operators
+  name: database
+  namespace: lab08-operators
 spec:
   databaseCpu: 30m
   databaseCpuLimit: 60m
@@ -90,15 +90,13 @@ spec:
   size: 1
 ```
 
-Replace `user99` in the `name` field with your own user ID for this lab.
-
 ![](img/create-database.png)
 
 When ready, select 'Create'.
 
 This should begin the deployment process and we can check the state of our new database pods.
 
-In the navigation pane, go to Workloads > Deployments then select the `userXX-database`, replacing `userXX` with your own user ID, or the name you gave to your database application in the previous step.
+In the navigation pane, go to Workloads > Deployments then select the `database`, or the name you gave to your database application in the previous step.
 
 ![](img/select-deployment.png)
 

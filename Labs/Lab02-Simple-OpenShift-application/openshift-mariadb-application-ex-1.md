@@ -9,10 +9,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab02-mariadb
+$ oc new-project lab02-mariadb
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Create a new local directory for this lab, and change to it.
 
@@ -72,7 +70,7 @@ Describe the Secret you created, to view some more infomation.
 ```
 $ oc describe secret mariadb-root-pass
 Name:         mariadb-root-pass
-Namespace:    userXX-lab02-mariadb
+Namespace:    lab02-mariadb
 Labels:       <none>
 Annotations:  <none>
 
@@ -357,8 +355,8 @@ configmap "mariadb-config" deleted
 secret "mariadb-root-password" deleted
 secret "mariadb-user-creds" deleted
 
-$ oc delete project userXX-lab02-mariadb
-project.project.openshift.io "userXX-lab02-mariadb" deleted
+$ oc delete project lab02-mariadb
+project.project.openshift.io "lab02-mariadb" deleted
 ```
 
 Lab complete. Please move on to [Exposing a WebSphere Liberty application](exposing-websphere-liberty-ex-2.md)

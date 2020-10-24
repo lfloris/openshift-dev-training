@@ -1,6 +1,6 @@
 # Logging in to the OpenShift Environment
 
-Open the Student X VM window and log in with the following credentials
+Open the Workstation VM window and log in with the following credentials
 
 User: ibmdemo
 
@@ -8,23 +8,21 @@ Password: passw0rd
 
 # Using the OpenShift Console
 
-In your Student-X VM, open the Firefox browser. The link to the OpenShift environment is bookmarked.
+In your Workstation VM, open the Firefox browser. The link to the OpenShift environment is bookmarked.
 
 ![](img/ocp-bookmark.png)
 
-From the log in screen, select `htpasswd` as the log in.
-
-Enter the user name and password provided to you by the instructor. The username is typically `userXX` and the password will be supplied to you.
-
-![](img/login-screen.png)
+From the log in screen, select "htpasswd" from the login options. A username and password should already auto-complete. This user is `ibmdemo` and the password is `engageibm`
 
 Select 'Log In'. This should take you to the OpenShift Project Dashboard
 
 ![](img/project-dashboard.png)
 
+This user is a cluster administrator account, meaning you have full access to all resources and actions in the cluster.
+
 # Using the oc CLI
 
-In your Student X VM, open a new Terminal window.
+In your Workstation VM, open a new Terminal window.
 
 To log in, use `oc login` with the OpenShift API Server endpoint. You'll be prompted to enter your user name and password. Once successfully authenticated, you'll receive a Login successful messsage.
 

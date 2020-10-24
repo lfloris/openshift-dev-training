@@ -9,10 +9,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab11-res-con
+$ oc new-project lab11-res-con
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Create a new local directory for this lab, and change to it.
 

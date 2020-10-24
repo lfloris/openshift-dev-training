@@ -9,10 +9,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab04-static-volume
+$ oc new-project lab04-static-volume
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Create a new local directory for this lab, and change to it.
 
@@ -21,11 +19,38 @@ $ mkdir -p Lab04/static-pv
 $ cd Lab04/static-pv
 ```
 
-For this task, 1 NFS export has been set up for each user. The exported path is as follows
+For this task, you'll need to create an NFS export on the NFS server in your environment. Switch to the NFS server using the control panel at the top of the window, then select `nfs`
 
-Server: 10.0.0.4
-Path: /nfs/userXX/volX
+![](img/select-nfs.png)
 
+Log in with the user `ibmadmin` and the password `passw0rd`.
+
+Create two new directories called `vol1` nd `vol2` in the `/nfs/` directory using `sudo`.
+
+```
+sudo mkdir /nfs/vol1
+sudo mkdir /nfs/vol2
+```
+
+Retrieve the IP address of this VM, we'll need that at a later step.
+
+```
+$ ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens34: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 00:50:56:2c:c9:c4 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.0.202/24 brd 10.0.0.255 scope global noprefixroute ens34
+       valid_lft forever preferred_lft forever
+    inet6 fe80::66d8:fb45:1ea3:823a/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+
+The IP here is `10.0.0.202`.
 
 ## Using the oc CLI
 
@@ -44,8 +69,8 @@ spec:
   capacity:
     storage: 1Gi
   nfs:
-    server: 10.0.0.4
-    path: /nfs/user99/vol1
+    server: 10.0.0.202
+    path: /nfs/vol1
   accessModes:
     - ReadWriteMany
 ```
@@ -207,7 +232,13 @@ InnoDB: The error means mysqld does not have the access rights to
 InnoDB: the directory.
 ```
 
-These lines suggests that the MySQL service could not write to the directory, which might indicate that the storage administrator has not assigned the correct privileges to the NFS export we're using here. At this point, if you are not the storage admin, you should contact them to fix the issue.
+These lines suggests that the MySQL service could not write to the directory, which might indicate that the storage administrator has not assigned the correct privileges to the NFS export we're using here. At this point, if you are not the storage admin, you should contact them to fix the issue. In this exercise, you have access to the NFS VM so you're able to fix the issue yourself.
+
+Switch back to the NFS VM again, this time fixing the permissions on the `vol1` directory you created earlier.
+
+```
+sudo chmod 777 /nfs/vol1
+```
 
 Once the storage admin has addressed the issue, check the status of the pod
 
@@ -244,8 +275,8 @@ spec:
   capacity:
     storage: 1Gi
   nfs:
-    server: 10.0.0.4
-    path: /nfs/user99/vol2
+    server: 10.0.0.202
+    path: /nfs/vol2
   accessModes:
     - ReadWriteMany
 ```

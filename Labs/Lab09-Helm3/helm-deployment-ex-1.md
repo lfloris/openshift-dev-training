@@ -11,10 +11,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab09-helm3
+$ oc new-project lab09-helm3
 ```
-
-Replace `userXX` with your user ID or other name.
 
 ## Retrieving the Helm3 CLI
 
@@ -30,7 +28,7 @@ $ helm3 list
 NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
 ```
 
-Helm is commonly known as a Kubernetes package manager. It's a way to combine multiple Kubernetes resouces into a single deployable artefact that contains all the necessary Kubernetes resources to deploy an application.
+Helm is commonly known as a Kubernetes package manager. It's a way to combine multiple Kubernetes resources into a single deployable artefact that contains all the necessary Kubernetes resources to deploy an application.
 
 ## Creating a New Chart
 

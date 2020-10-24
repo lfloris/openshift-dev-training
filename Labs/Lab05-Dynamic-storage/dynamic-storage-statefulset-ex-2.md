@@ -9,10 +9,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab05-dynamic-pvc-sts
+$ oc new-project lab05-dynamic-pvc-sts
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Create a new local directory for this lab, and change to it.
 
@@ -95,7 +93,7 @@ spec:
       name: www
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "user99-dynamic-nfs-storage"
+      storageClassName: "dynamic-nfs-storage"
       resources:
         requests:
           storage: 1Gi
@@ -130,9 +128,9 @@ Check the PVCs created. You should see one is created for each pod, and the name
 ```
 $ oc get pvc
 NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
-www-web-0   Bound    pvc-768cf4e6-dcb6-450c-8e29-8c4d0352bd1a   1Gi        RWO            user99-dynamic-nfs-storage   10s
-www-web-1   Bound    pvc-8250e684-008c-4278-b5ed-1e9dd846ca3d   1Gi        RWO            user99-dynamic-nfs-storage   6s
-www-web-2   Bound    pvc-4323e8f3-82b6-474c-9f71-1ea7052b89ff   1Gi        RWO            user99-dynamic-nfs-storage   2s
+www-web-0   Bound    pvc-768cf4e6-dcb6-450c-8e29-8c4d0352bd1a   1Gi        RWO            dynamic-nfs-storage          10s
+www-web-1   Bound    pvc-8250e684-008c-4278-b5ed-1e9dd846ca3d   1Gi        RWO            dynamic-nfs-storage          6s
+www-web-2   Bound    pvc-4323e8f3-82b6-474c-9f71-1ea7052b89ff   1Gi        RWO            dynamic-nfs-storage          2s
 ```
 
 One of the benefits of a StatefulSet with dynamic storage provisioning is that we can easily scale it and not have to worry about manually creating additional Persistent Volumes and Persistent Volume Claims.
@@ -159,11 +157,11 @@ web-4   1/1     Running   0          48s
 
 $ oc get pvc
 NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
-www-web-0   Bound    pvc-768cf4e6-dcb6-450c-8e29-8c4d0352bd1a   1Gi        RWO            user99-dynamic-nfs-storage   6m13s
-www-web-1   Bound    pvc-8250e684-008c-4278-b5ed-1e9dd846ca3d   1Gi        RWO            user99-dynamic-nfs-storage   6m9s
-www-web-2   Bound    pvc-4323e8f3-82b6-474c-9f71-1ea7052b89ff   1Gi        RWO            user99-dynamic-nfs-storage   6m5s
-www-web-3   Bound    pvc-63900320-0640-4425-8950-186464b7a48b   1Gi        RWO            user99-dynamic-nfs-storage   2m22s
-www-web-4   Bound    pvc-a2d3c87b-1ffc-4144-9cf5-b369c2f5b0a2   1Gi        RWO            user99-dynamic-nfs-storage   2m11s
+www-web-0   Bound    pvc-768cf4e6-dcb6-450c-8e29-8c4d0352bd1a   1Gi        RWO            dynamic-nfs-storage          6m13s
+www-web-1   Bound    pvc-8250e684-008c-4278-b5ed-1e9dd846ca3d   1Gi        RWO            dynamic-nfs-storage          6m9s
+www-web-2   Bound    pvc-4323e8f3-82b6-474c-9f71-1ea7052b89ff   1Gi        RWO            dynamic-nfs-storage          6m5s
+www-web-3   Bound    pvc-63900320-0640-4425-8950-186464b7a48b   1Gi        RWO            dynamic-nfs-storage          2m22s
+www-web-4   Bound    pvc-a2d3c87b-1ffc-4144-9cf5-b369c2f5b0a2   1Gi        RWO            dynamic-nfs-storage          2m11s
 ```
 
 We can also scale this back down just as easily. The scheduler will always remove the newest pods first
@@ -184,11 +182,11 @@ web-2   1/1     Running   0          8m24s
 
 $ oc get pvc
 NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
-www-web-0   Bound    pvc-768cf4e6-dcb6-450c-8e29-8c4d0352bd1a   1Gi        RWO            user99-dynamic-nfs-storage   8m40s
-www-web-1   Bound    pvc-8250e684-008c-4278-b5ed-1e9dd846ca3d   1Gi        RWO            user99-dynamic-nfs-storage   8m36s
-www-web-2   Bound    pvc-4323e8f3-82b6-474c-9f71-1ea7052b89ff   1Gi        RWO            user99-dynamic-nfs-storage   8m32s
-www-web-3   Bound    pvc-63900320-0640-4425-8950-186464b7a48b   1Gi        RWO            user99-dynamic-nfs-storage   4m49s
-www-web-4   Bound    pvc-a2d3c87b-1ffc-4144-9cf5-b369c2f5b0a2   1Gi        RWO            user99-dynamic-nfs-storage   4m38s
+www-web-0   Bound    pvc-768cf4e6-dcb6-450c-8e29-8c4d0352bd1a   1Gi        RWO            dynamic-nfs-storage          8m40s
+www-web-1   Bound    pvc-8250e684-008c-4278-b5ed-1e9dd846ca3d   1Gi        RWO            dynamic-nfs-storage          8m36s
+www-web-2   Bound    pvc-4323e8f3-82b6-474c-9f71-1ea7052b89ff   1Gi        RWO            dynamic-nfs-storage          8m32s
+www-web-3   Bound    pvc-63900320-0640-4425-8950-186464b7a48b   1Gi        RWO            dynamic-nfs-storage          4m49s
+www-web-4   Bound    pvc-a2d3c87b-1ffc-4144-9cf5-b369c2f5b0a2   1Gi        RWO            dynamic-nfs-storage          4m38s
 ```
 
 It is worth noting here that the PVCs created as a result of scaling horizontally were not removed. This is the default behaviour and cleaning up of PVCs is usually done by the project admin so that a PVC containing potentially production data is not automatically removed by OpenShift.

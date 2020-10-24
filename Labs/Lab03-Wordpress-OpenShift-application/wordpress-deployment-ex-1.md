@@ -9,10 +9,21 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab03-wp-sql
+$ oc new-project lab03-wp-sql
 ```
 
-Replace `userXX` with your user ID or other name.
+Apply some labels to two of the cluster nodes. We'll use these labels to make the application target specific nodes later on.
+
+```
+oc label node master2 apps=frontend
+oc label node master3 apps=backend
+```
+
+You will need to apply the `anyuid` Security Context Constraint (SCC) to your project to allow the Wordpress container to work correctly. Security Context Constraints will be covered in a later lab. To add the `anyuid` SCC to your project, you would run the following command
+
+```
+$ oc adm policy add-scc-to-user anyuid -z default
+```
 
 Create a new local directory for this lab, and change to it.
 
@@ -27,7 +38,7 @@ The overall design looks as follows
 
 To get started, you can use the following base deployment specifications.
 
-Wordpress
+**Wordpress**
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -62,7 +73,7 @@ spec:
         emptyDir: {}
 ```
 
-MySQL
+**MySQL**
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -98,7 +109,7 @@ spec:
         emptyDir: {}
 ```
 
-Use the following specifications for your application
+Use the following specifications for your application:
 
 Use a ConfigMap to store the following environment variables
 - `WORDPRESS_DB_HOST` for the name of the MySQL Service
@@ -119,8 +130,8 @@ Use the following resource requests and limits
 | Memory request | 128Mi | 256Mi |
 | Memory limit | 256Mi | 512Mi |
 
-Add a nodeSelector to the Wordpress front end to target nodes labelled "apps=frontend"
-Add a nodeSelector to the MySQL back end to target nodes labelled "apps=backend"
+Add a nodeSelector to the Wordpress front end to target nodes labelled `apps=frontend`
+Add a nodeSelector to the MySQL back end to target nodes labelled `apps=backend`
 
 Expose the Wordpress front end.
 
@@ -129,14 +140,6 @@ Create a new route for the wordpress service only.
 You'll need to create a few ConfigMaps and secrets, then add them to these deployment files as we did in Lab02.
 
 Once your files are ready to deploy to OpenShift, you can use `oc create -f <filename>` to deploy it within your project.
-
-You will need to apply the `anyuid` Security Context Constraint (SCC) to your project to allow the Wordpress container to work correctly. Security Context Constraints will be covered in a later lab. To add the `anyuid` SCC to your project, you would run the following command
-
-```
-$ oc adm policy add-scc-to-user anyuid -z default
-```
-
-Ask your system administrator to do this for you, providing the project name
 
 When finished, remove all of the resources you created and the project.
 

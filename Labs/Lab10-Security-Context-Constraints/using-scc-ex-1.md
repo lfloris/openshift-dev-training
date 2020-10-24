@@ -9,10 +9,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab10-scc
+$ oc new-project lab10-scc
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Create a new local directory for this lab, and change to it.
 
@@ -147,7 +145,7 @@ Looks like the storage was created fine. Let's check the events for the project
 $ oc get events
 LAST SEEN   TYPE      REASON                  OBJECT                                                   MESSAGE
 9s          Normal    ExternalProvisioning    persistentvolumeclaim/mongo-persistent-storage-mongo-0   waiting for a volume to be created, either by external provisioner "nfs-provisioning" or manually created by system administrator
-9s          Normal    Provisioning            persistentvolumeclaim/mongo-persistent-storage-mongo-0   External provisioner is provisioning volume for claim "user99-lab10-scc/mongo-persistent-storage-mongo-0"
+9s          Normal    Provisioning            persistentvolumeclaim/mongo-persistent-storage-mongo-0   External provisioner is provisioning volume for claim "lab10-scc/mongo-persistent-storage-mongo-0"
 9s          Normal    ProvisioningSucceeded   persistentvolumeclaim/mongo-persistent-storage-mongo-0   Successfully provisioned volume pvc-51f17522-e956-4489-a751-3b3766589a2c
 9s          Normal    SuccessfulCreate        statefulset/mongo                                        create Claim mongo-persistent-storage-mongo-0 Pod mongo-0 in StatefulSet mongo success
 4s          Warning   FailedCreate            statefulset/mongo                                        create Pod mongo-0 in StatefulSet mongo failed error: pods "mongo-0" is forbidden: unable to validate against any security context constraint: [capabilities.add: Invalid value: "IPC_LOCK": capability may not be added]
@@ -234,7 +232,7 @@ allowedCapabilities:
 - IPC_LOCK
 ```
 
-Also change the name of this SCC from `restricted` to `mongodb-scc-userXX`, replacing XX with your user ID that you have been using in the labs so far. You can also update the `kubernetes.io/description` if you wish.
+Also change the name of this SCC from `restricted` to `mongodb-scc`, replacing XX with your user ID that you have been using in the labs so far. You can also update the `kubernetes.io/description` if you wish.
 
 Lastly, we need to update the groups section from
 ```
@@ -244,10 +242,10 @@ groups:
 to
 ```
 groups:
-- system:serviceaccounts:userXX-lab10-scc
+- system:serviceaccounts:lab10-scc
 ```
 
-Remember to replace `userXX-lab10-scc` with your own project name.
+Remember to replace `lab10-scc` with your own project name.
 
 Save and exit the file.
 
@@ -264,7 +262,7 @@ Verify the new SCC exists in the list of SCCs available
 $ oc get scc
 NAME                   AGE
 anyuid                 108d
-mongodb-scc-user99     5s
+mongodb-scc            5s
 hostaccess             108d
 hostmount-anyuid       108d
 hostnetwork            108d
@@ -274,11 +272,11 @@ privileged             108d
 restricted             108d
 ```
 
-Now we need to apply this SCC to the currrent project. OpenShift makes it very simple to do this with just one command. This command will create all the other required resources that allows the service account within our project (the mongodb deployment only uses the default service account anyway) to consume the SCC. This command takes the following format: `oc adm policy add-scc-to-user [SCC] [SERVICEACCOUNT]`. The long name for the service acccount in this instance would be `system:serviceaccount:user99-lab10-scc:default`, but as we're in the current `user99-lab10-scc` project we can simply replace this with `-z default`.
+Now we need to apply this SCC to the currrent project. OpenShift makes it very simple to do this with just one command. This command will create all the other required resources that allows the service account within our project (the mongodb deployment only uses the default service account anyway) to consume the SCC. This command takes the following format: `oc adm policy add-scc-to-user [SCC] [SERVICEACCOUNT]`. The long name for the service acccount in this instance would be `system:serviceaccount:lab10-scc:default`, but as we're in the current `lab10-scc` project we can simply replace this with `-z default`.
 
 ```
-$ oc adm policy add-scc-to-user mongodb-scc-user99 -z default
-securitycontextconstraints.security.openshift.io/mongodb-scc-user99 added to: ["system:serviceaccount:user99-lab10-scc:default"]
+$ oc adm policy add-scc-to-user mongodb-scc -z default
+securitycontextconstraints.security.openshift.io/mongodb-scc added to: ["system:serviceaccount:lab10-scc:default"]
 ```
 
 Now that the new SCC is in place, we should now see a mongodb pod starting up.

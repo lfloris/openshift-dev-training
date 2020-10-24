@@ -23,7 +23,7 @@ This will bring up the 'Import from Dockerfile' input form.
 Use the following information when you're inputting the data into the UI fields
 
 *Git*
-- Git Repo URL: https://github.com/lfloris/openshift-bootcamp
+- Git Repo URL: https://github.com/lfloris/openshift-dev-training
 - Show Advanced Git Options > Context Dir: Labs/Lab06-WebUI-application-deployments/python-image
 
 *Dockerfile*

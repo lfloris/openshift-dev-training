@@ -1,5 +1,7 @@
 # OpenShift Application Developer Training
 
+This workshop is designed to take a developer on a journey through Cloud Native application development on OpenShift. The workshop looks at how a developer can begin with using container applications running on a local container runtime such as Docker or Podman and expanding the core concepts to create OpenShift applications through a variety of deployment methods, ranging from simple YAML definitions to CICD pipeline deployments.
+
 # Agenda
 
 ## Day 1
@@ -68,7 +70,7 @@
 - Introduction to Helm charts
 	- Helm 3 overview
 	- Developing helm charts
-	- Deploying Helm charts to Openshift
+	- Deploying Helm charts to OpenShift
     - [DEMO] Developing, deploying and updating a simple Helm 3 chart
 	- [LAB] Developing and deploying a simple Helm 3 chart
 - OpenShift Security Context Constraints
@@ -82,6 +84,9 @@
     - OpenShift Image Registry
     - [DEMO] Pushing and pulling images
     - [LAB] Pushing and pulling images
+- Scaling Applications
+    - Manual and Autoscaling Applications
+    - [LAB] Scaling applications
 
 
 ## Day 4
@@ -89,7 +94,7 @@
 - DevOps and DevSecOps
 - WebSphere Liberty on OpenShift
 - [LAB]: Set up a CI/CD pipeline on OpenShift using Jenkins to deploy a simple web application
-- Transformation Advisor - Migrating Websphere Applications to OpenShift
+- Transformation Advisor - Migrating WebSphere Applications to OpenShift
 
 **Microservices architecture**
 - Microservices application architecture
@@ -100,6 +105,6 @@
 
 ## Day 5
 **Microservices architecture**
-- Service mesh
+- Red Hat OpenShift ServiceMesh
 - Microservices security
-- [LAB]: Using ServiceMesh to deploy a Microservices Application
+- [LAB]: Using ServiceMesh to deploy a microservices application

@@ -13,10 +13,8 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Once you're logged in, create a new project for this deployment.
 
 ```
-$ oc new-project userXX-lab07-s2i-cli
+$ oc new-project lab07-s2i-cli
 ```
-
-Replace `userXX` with your user ID or other name.
 
 Run the oc new-build command which will pull down the Centos nodejs docker image from Docker Hub.
 ```

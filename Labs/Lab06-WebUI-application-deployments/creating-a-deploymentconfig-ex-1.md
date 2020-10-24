@@ -8,7 +8,7 @@ Once you're logged in, create a new project for this deployment. Go to Home > Pr
 
 ![](../Getting-started/img/create-project.png)
 
-In the 'Create Project' dialogue box that appears, use the naming format `userXX-lab06-dc-ui`, replacing `userXX` with your user ID. Completing the Display Name and Description fields are recommended, but optional.
+In the 'Create Project' dialogue box that appears, use the naming format `lab06-dc-ui`. Completing the Display Name and Description fields are recommended, but optional.
 
 ![](img/create-project-dialog-ex-1.png)
 
@@ -22,7 +22,7 @@ In the Image Name field, enter 'quay.io/lfloris/my-python:latest`, then select t
 
 ![](img/deploy-image-name-ex-1.png)
 
-This gives you some information about the immage, including some potential security risks. In this example the container runs as the root user. At this point, as a developer, if you know that you don't have the capabilities to run this container image, you would typically address the issues by creating a new base image and uploading to the target repository, in this case `quay.io`.
+This gives you some information about the image, including some potential security risks. In this example the container runs as the root user. At this point, as a developer, if you know that you don't have the capabilities to run this container image, you would typically address the issues by creating a new base image and uploading to the target repository, in this case `quay.io`.
 
 You will need to apply the `anyuid` Security Context Constraint (SCC) to your project to allow the container to work correctly. Security Context Constraints will be covered in a later lab. To add the `anyuid` SCC to your project, you would run the following command
 
@@ -56,7 +56,7 @@ Select 'Resource Limits' and enter the following
 
 Also from the advanced options, select 'Labels'
 
-Enter the label `user=userXX` replacing `userXX` with your user ID.
+Enter the label `user=ibmadmin`.
 
 ![](img/adv-options-label-ex-1.png)
 
