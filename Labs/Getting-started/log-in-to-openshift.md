@@ -12,7 +12,7 @@ In your Workstation VM, open the Firefox browser. The link to the OpenShift envi
 
 ![](img/ocp-bookmark.png)
 
-From the log in screen, select "htpasswd" from the login options. A username and password should already auto-complete. This user is `ibmdemo` and the password is `engageibm`
+From the log in screen, select "htpasswd" from the login options. A username and password should already auto-complete. This user is `ibmadmin` and the password is `engageibm`
 
 Select 'Log In'. This should take you to the OpenShift Project Dashboard
 
@@ -31,13 +31,13 @@ For this lab, the  OpenShift API Server endpoint is https://api.demo.ibmdte.net:
 ```
 $ oc login https://api.demo.ibmdte.net:6443
 Authentication required for https://api.demo.ibmdte.net:6443 (openshift)
-Username: user99
+Username: ibmadmin
 Password: 
 Login successful.
 
-You don't have any projects. You can try to create a new project, by running
+You have access to 75 projects, the list has been suppressed. You can list all projects with 'oc projects'
 
-    oc new-project <projectname>
+Using project "default".
 ```
 
 

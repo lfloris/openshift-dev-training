@@ -16,7 +16,7 @@ Six Linux VMs have been provided for this lab.
 ![](img/env-vms.png)
 
 
-• The Red Hat OpenShift Container Platform (RHOCP) v4.4, is installed in 4 VMs, the master1 VM, the master2 VM, the master3 VM, and the DNS VM, with 3 master nodes and 3 compute nodes (the master nodes are serving as computer nodes as well).
+• The Red Hat OpenShift Container Platform (RHOCP) v4.4, is installed in 4 VMs, the master1 VM, the master2 VM, the master3 VM, and the DNS VM, with 3 master nodes and 3 compute nodes (the master nodes are serving as compute nodes as well).
 
 • The Workstation VM is the one you will use to access and work with the RHOCP cluster in this lab. The login credentials for the Workstation VM are: 
 
@@ -39,13 +39,8 @@ The Workstation Linux Desktop is displayed. You will execute all the lab tasks o
 
 The Labs are located at https://github.com/lfloris/openshift-dev-training/tree/main/Labs
 
-On your Workstation VM, in your home directory, create a new directory for the lab content.
+On your Workstation VM, in your home directory clone the whole repo to your local machine.
 
-```
-$ mkdir ibm-ocp-training
-```
-
-To clone the whole repo to your local machine, use the following commands
 ```
 $ git clone https://github.com/lfloris/openshift-dev-training.git ibm-ocp-training/
 ```
