@@ -1,0 +1,5 @@
+# Exercise 2 - Wordpress Deployment with Helm3
+
+In this lab you will create, develop, publish and install a custom Helm chart to OpenShift with minimal guidance. The goal in this exercise is to create a working Wordpress + MySQL application, similar to that deployed in [Lab03 - Wordpress OpenShift Application](../Lab03-Wordpress-OpenShift-application/wordpress-deployment-ex-1.md) except this time deployed from a Helm chart. If you did not complete this exercise, then ask the training instructor for the solution to that lab so you can continue with this one.
+
+Follow a process similar to that of the previous exercise. In this scenario, you will need to create extra YAML files to cater for the additional components. No storage is required for the MySQL deployment, but feel free to add storage if you want to.

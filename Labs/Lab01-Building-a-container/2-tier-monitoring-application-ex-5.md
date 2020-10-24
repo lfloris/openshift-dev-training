@@ -34,7 +34,7 @@ influxdb influx -import -path=/path/to/NOAA_data.txt -precision=s -database=NOAA
 - The data source within Grafana will need to be set up when the Grafana server is running. To do this, go to Settings > Configuration > Data Sources
 - Import the Grafana dashboard, located [here](resources/NOAA/grafana-dashboard.json). You can do this by selecting the + icon > import. Once the dashboard is imported, set the Absolute Time Range from 16/08/2019 to 17/09/2019.
 
-
+Lab complete.
 
 
 

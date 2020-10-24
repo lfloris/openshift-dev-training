@@ -1,6 +1,6 @@
 # Exercise 1 - Deploying an Operator
 
-In this lab you'll explore how the cluster administrator can make a PostgreSQL Operator available from the OperatorHub to other users in the cluster so they can install PostgreSQL applications managed by the MongDB Operator.
+In this lab you'll explore how the cluster administrator can make a PostgreSQL Operator available from the OperatorHub to other users in the cluster so they can install PostgreSQL applications managed by the PostgreSQL Operator.
 
 This lab will be executed in three parts
 
@@ -10,21 +10,21 @@ This lab will be executed in three parts
 
 ## Part 1 - Create the Project
 
-First we need to log in with a non-admin role and create a project similar to `lab08-operator`.
+First we need to log in with a non-admin role and create a project similar to `lab08-operators`. For the developer role, we'll use the `ibmuser` user.
 
-Log into OpenShift using the CLI, as described [here](../Getting-started/log-in-to-openshift.md).
+Log into OpenShift using the CLI with the user `ibmuser`, as described [here](../Getting-started/log-in-to-openshift.md).
 
-Create the project
+Create the project as this user
 
 ```
-$ oc new-project lab08-operator
+$ oc new-project lab08-operators
 ```
 
 ## Part 2 - Install the Operator
 
 Now we should take the role of the Cluster Administrator to make the PostgreSQL Operator available.
 
-Log in as the admin user, following the same process as described [here](../Getting-started/log-in-to-openshift.md), except this time we log in with admin credentials. In this lab environment, use the following
+Log in as the cluster-admin `ibmadmin` user. Only administrative users can install operators to projects. Once an operator has been installed to a project, developers with access to that project can consume the operator Custom Resources to create applications.
 
 ```
 $ oc login https://api.demo.ibmdte.net:6443 -u ibmadmin -p engageibm
@@ -52,11 +52,19 @@ The PostgreSQL Operator should begin installing to the selected project.
 
 ![](img/postgresql-installed.png)
 
-This may take a short amount of time, so while we wait we can now log out of the Web Console with the `ibmadmin` user and log in again with our developer user.
+This may take a short amount of time to start up.
+
+The existing user `ibmuser` only has a basic-user role, so we need to upgrade some of their privileges to they can create and edit resources in the `lab08-operators` project. Do this with the following
+
+```
+$ oc adm policy add-role-to-user edit ibmuser -n lab08-operators
+```
+
+We can now log out of the Web Console with the `ibmadmin` user and log in again with our developer user.
 
 ## Part 3 - Install a Database from the PostreSQL Operator
 
-Now log back into the Web Console as the developer, using your own user ID as described [here](../Getting-started/log-in-to-openshift.md).
+Now log back into the Web Console as the developer user `ibmuser`.
 
 From the project selection box, select the project you created at the start of this lab, for example, `lab08-operators`. In the navigation pane, select Operators > Installed Operators, then select the PostgreSQL Operator. You may need to use the search box if you have a lot of Operators installed to this project.
 

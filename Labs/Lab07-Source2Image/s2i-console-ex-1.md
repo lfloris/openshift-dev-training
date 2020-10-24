@@ -8,7 +8,7 @@ Once you're logged in, create a new project for this deployment. Go to Home > Pr
 
 ![](../Getting-started/img/create-project.png)
 
-In the 'Create Project' dialogue box that appears, use the naming format `lab06-dc-ui`. Completing the Display Name and Description fields are recommended, but optional.
+In the 'Create Project' dialogue box that appears, use the naming format `lab07-s2i`. Completing the Display Name and Description fields are recommended, but optional.
 
 ![](img/create-project-ex-1.png)
 

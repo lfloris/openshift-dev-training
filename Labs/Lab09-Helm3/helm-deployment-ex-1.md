@@ -18,13 +18,13 @@ $ oc new-project lab09-helm3
 
 Download the Helm3 CLI tool from the following link
 ```
-$ sudo curl -Lo /usr/local/bin/helm3 https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64 && sudo chmod ua+x /usr/local/bin/helm3
+$ sudo curl -Lo /usr/local/bin/helm https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64 && sudo chmod ua+x /usr/local/bin/helm
 ```
 
 Verify Helm3 CLI can communicate with OpenShift 
 
 ```
-$ helm3 list
+$ helm list
 NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
 ```
 
@@ -35,7 +35,7 @@ Helm is commonly known as a Kubernetes package manager. It's a way to combine mu
 To create a Helm chart, run the following command
 
 ```
-$ helm3 create python-app
+$ helm create python-app
 Creating python-app
 ```
 
@@ -202,18 +202,18 @@ image:
   pullPolicy: IfNotPresent
   tag: v1
 ```
-3. Add `myuserid: userXX` to the file, replacing `userXX` with your own user ID.
+3. Add `myuserid: ibmadmin` to the file.
 
 Once the changes have been made, our Helm application templates are now ready for testing and packaging.
 
-Before packaging the application and deploying to OpenShift, it's a good idea to use the `helm lint` command. The Helm linter will run the application through the templating engine and look for anomolies between the values and your template definitions, and display any errors found. The run the linter, change directory to the parent directory (using `cd ..` or similar) and run `helm3 lint <chart-dir>`. If there are any errors, correct them and re-run the lint command until you receive the message `1 chart(s) linted, no failures`
+Before packaging the application and deploying to OpenShift, it's a good idea to use the `helm lint` command. The Helm linter will run the application through the templating engine and look for anomolies between the values and your template definitions, and display any errors found. The run the linter, change directory to the parent directory (using `cd ..` or similar) and run `helm lint <chart-dir>`. If there are any errors, correct them and re-run the lint command until you receive the message `1 chart(s) linted, no failures`
 
-Run `helm3 lint` on your application directory to check for errors.
+Run `helm lint` on your application directory to check for errors.
 
-With regards to this lab, we haven't edited a lot of content to allows us to easily make mistakes. But, for example, if you had made a mistake and missed the leading `.` from `.Values.myuserid`, the `helm3 lint` command would produce the following message
+With regards to this lab, we haven't edited a lot of content to allows us to easily make mistakes. But, for example, if you had made a mistake and missed the leading `.` from `.Values.myuserid`, the `helm lint` command would produce the following message
 
 ```
-$ helm3 lint python-app/
+$ helm lint python-app/
 ==> Linting python-app/
 [INFO] Chart.yaml: icon is recommended
 [ERROR] templates/: parse error in "python-app/templates/service.yaml": template: python-app/templates/service.yaml:20: function "Values" not defined
@@ -224,7 +224,7 @@ Error: 1 chart(s) linted, 1 chart(s) failed
 Otherwise, you should receive a responses similar to the following
 
 ```
-$ helm3 lint python-app/
+$ helm lint python-app/
 ==> Linting python-app/
 [INFO] Chart.yaml: icon is recommended
 
@@ -243,24 +243,24 @@ oc adm policy add-scc-to-user anyuid -z default
 
 Helm offers a `--dry-run` argument that allows you to run the installer on the chart, but not actually deploy anything. This is particularly useful with the `--debug` argument that will output the contents of all the generated Kubernetes resources to stdout so you can check the resources formatting before packaging. Used in conjunction with an overriding `values.yaml` you can simulate a user deployment with custom values and check to ensure the output is correct. 
 
-The `helm3 install` command uses the following syntax: `helm install [NAME] [CHART] [flags]`
+The `helm install` command uses the following syntax: `helm install [NAME] [CHART] [flags]`
 
 ```
-$ helm3 install my-python python-app/ --dry-run --debug
+$ helm install my-python python-app/ --dry-run --debug
 ```
 
 This command should output all of the rendered resources to the terminal for us to check that the values supplied were passed correctly. If everything looks good, we can install the chart.
 
 ```
-$ helm3 install my-python python-app/
+$ helm install my-python python-app/
 NAME: my-python
 LAST DEPLOYED: Tue Jun 30 15:14:14 2020
-NAMESPACE: user99-lab09-helm3
+NAMESPACE: lab09-helm3
 STATUS: deployed
 REVISION: 1
 NOTES:
 1. Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace user99-lab09-helm3 -l "app.kubernetes.io/name=python-app,app.kubernetes.io/instance=my-python" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace lab09-helm3 -l "app.kubernetes.io/name=python-app,app.kubernetes.io/instance=my-python" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl port-forward $POD_NAME 8080:80
 ```
@@ -280,7 +280,7 @@ To demonstrate one of the core features of Helm - the reusability - we should pa
 Run the `helm package` on your `python-app` directory
 
 ```
-$ helm3 package python-app --app-version 1.0.0
+$ helm package python-app --app-version 1.0.0
 Successfully packaged chart and saved it to: /home/ibmdemo/python-app-0.1.0.tgz
 ```
 
@@ -288,10 +288,8 @@ Now that we have a packaged Helm chart, we can deploy another instance of it to 
 
 For example, if we wanted to use a different image tag instead of `v1`, potentially simulating another team that is deploying a stable version of our Python application, we can install the chart using the following
 
-Before installing, ask your cluster administrator to enable the use of the `anyuid` Security Context Constraint, providing your project name.
-
 ```
-$ helm3 install my-python-v1 python-app-0.1.0.tgz --set image.tag=latest
+$ helm install my-python-v1 python-app-0.1.0.tgz --set image.tag=latest
 ```
 
 Once the application is deployed, we can check the image used in the pod spec
@@ -303,7 +301,7 @@ my-python-v1-python-app-554b565f5-6vbvn   1/1     Running   0          94s
 
 $ oc describe pod my-python-v1-python-app-554b565f5-6vbvn
 Name:               my-python-v1-python-app-554b565f5-6vbvn
-Namespace:          user99-lab09-helm3
+Namespace:          lab09-helm3
 Priority:           0
 PriorityClassName:  <none>
 Node:               worker1/10.0.0.21
@@ -361,15 +359,15 @@ Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
 Events:
   Type    Reason     Age        From               Message
   ----    ------     ----       ----               -------
-  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned user99-lab09-helm3/my-python-v1-python-app-554b565f5-6vbvn to worker1
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned lab09-helm3/my-python-v1-python-app-554b565f5-6vbvn to worker1
   Normal  Pulling    2m22s      kubelet, worker1   Pulling image "quay.io/lfloris/my-python:latest"
   Normal  Pulled     2m20s      kubelet, worker1   Successfully pulled image "quay.io/lfloris/my-python:latest"
   Normal  Created    2m20s      kubelet, worker1   Created container python-app
   Normal  Started    2m19s      kubelet, worker1   Started container python-app
 ```
 
-So now we have developed a working, reusable Helm based application.
+So now we have developed a working, reusable Helm3 based application.
 
 When you're finished, clean up any resources created and delete the project.
 
-Lab complete.
+Lab complete. Please move on to [Wordpress Deployment with Helm3](helm-deployment-ex-2.md)

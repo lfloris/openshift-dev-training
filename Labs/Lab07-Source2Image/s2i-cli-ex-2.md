@@ -42,12 +42,12 @@ $ oc new-build centos/nodejs-8-centos7~https://github.com/sclorg/nodejs-ex.git
 After running the command explore what the objects that come as a result of the build command:
 
 ```
-$ oc get is                                                                                TAGS     UPDATED
-NAME        IMAGE REPOSITORY                                                                             TAGS     UPDATED
-nodejs-ex   default-route-openshift-image-registry.apps.demo.ibmdte.net/user99-lab07-s2i-cli/nodejs-ex   latest   23 seconds ago
+$ oc get is                                                                               
+NAME        IMAGE REPOSITORY                                                                      TAGS     UPDATED
+nodejs-ex   default-route-openshift-image-registry.apps.demo.ibmdte.net/lab07-s2i-cli/nodejs-ex   latest   23 seconds ago
 ```
 
-Take a note of how the build command created two image streams. Image streams are a way for Openshift to keep a central index of images that are used for deployments. The Image stream point to the internal registry in which the images are stored. At any point, if the image to which the IS points to is renewed, the Imagestream will keep track of that by assigning a new image tag. The build command created two IS one for the builder image and one for the application container image.
+Take a note of how the build command created two image streams. Image streams are a way for OpenShift to keep a central index of images that are used for deployments. The Image stream point to the internal registry in which the images are stored. At any point, if the image to which the IS points to is renewed, the ImageStream will keep track of that by assigning a new image tag. The build command created two IS one for the builder image and one for the application container image.
 
 ```
 $ oc get builds
@@ -60,7 +60,7 @@ The command also creates a new resource, called BuildConfig. Run a describe comm
 ```
 $ oc describe build s2i-app
 Name:		nodejs-ex-1
-Namespace:	user99-lab07-s2i-cli
+Namespace:	lab07-s2i-cli
 Created:	2 minutes ago
 Labels:		build=nodejs-ex
 		buildconfig=nodejs-ex
@@ -95,18 +95,18 @@ Build trigger cause:	Build configuration change
 Events:
   Type		Reason		Age			From			Message
   ----		------		----			----			-------
-  Normal	Scheduled	<unknown>		default-scheduler	Successfully assigned user99-lab07-s2i-cli/nodejs-ex-1-build to worker1
+  Normal	Scheduled	<unknown>		default-scheduler	Successfully assigned lab07-s2i-cli/nodejs-ex-1-build to worker1
   Normal	Pulled		2m21s			kubelet, worker1	Container image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a079d14d21864283f048719b9ad8454c81a5e0ea79a71ca50446119345a84a66" already present on machine
   Normal	Created		2m21s			kubelet, worker1	Created container git-clone
   Normal	Started		2m21s			kubelet, worker1	Started container git-clone
-  Normal	BuildStarted	2m20s			build-controller	Build user99-lab07-s2i-cli/nodejs-ex-1 is now running
+  Normal	BuildStarted	2m20s			build-controller	Build lab07-s2i-cli/nodejs-ex-1 is now running
   Normal	Created		2m18s			kubelet, worker1	Created container manage-dockerfile
   Normal	Pulled		2m18s			kubelet, worker1	Container image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a079d14d21864283f048719b9ad8454c81a5e0ea79a71ca50446119345a84a66" already present on machine
   Normal	Started		2m18s			kubelet, worker1	Started container manage-dockerfile
   Normal	Pulled		2m17s			kubelet, worker1	Container image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a079d14d21864283f048719b9ad8454c81a5e0ea79a71ca50446119345a84a66" already present on machine
   Normal	Created		2m17s			kubelet, worker1	Created container sti-build
   Normal	Started		2m17s			kubelet, worker1	Started container sti-build
-  Normal	BuildCompleted	89s (x2 over 89s)	build-controller	Build user99-lab07-s2i-cli/nodejs-ex-1 completed successfully
+  Normal	BuildCompleted	89s (x2 over 89s)	build-controller	Build lab07-s2i-cli/nodejs-ex-1 completed successfully
 ```
 
 So we can see here some of the actions completed in the events. The `Status` says `Complete` and the last few events also say `BuildCompleted`, which is also another good sign.
@@ -114,7 +114,7 @@ So we can see here some of the actions completed in the events. The `Status` say
 Go ahead and deploy the application while specifying the newly created IS:
 ```
 $ oc new-app -i=nodejs-ex --name=nodejs-e
---> Found image 0ef6040 (4 minutes old) in image stream "user99-lab07-s2i-cli/nodejs-ex" under tag "latest" for "nodejs-ex"
+--> Found image 0ef6040 (4 minutes old) in image stream "lab07-s2i-cli/nodejs-ex" under tag "latest" for "nodejs-ex"
 
     Node.js 8 
     --------- 
@@ -139,7 +139,7 @@ Run `oc status` to view the current status of the application
 
 ```
 $ oc status
-In project user99-lab07-s2i-cli on server https://api.demo.ibmdte.net:6443
+In project lab07-s2i-cli on server https://api.demo.ibmdte.net:6443
 
 svc/nodejs-ex - 172.30.213.227:8080
   dc/nodejs-ex deploys istag/nodejs-ex:latest <-
@@ -177,8 +177,8 @@ $ oc expose service nodejs-ex
 route.route.openshift.io/nodejs-ex exposed
 
 $ oc get route
-NAME        HOST/PORT                                             PATH   SERVICES    PORT       TERMINATION   WILDCARD
-nodejs-ex   nodejs-ex-user99-lab07-s2i-cli.apps.demo.ibmdte.net          nodejs-ex   8080-tcp                 None
+NAME        HOST/PORT                                             PATH        SERVICES    PORT        TERMINATION   WILDCARD
+nodejs-ex   nodejs-ex-lab07-s2i-cli.apps.demo.ibmdte.net          nodejs-ex   8080-tcp                None
 ```
 
 We can `curl` the route directly from the command line, 
@@ -202,11 +202,11 @@ imagestream.image.openshift.io "nodejs-ex" deleted
 buildconfig.build.openshift.io "nodejs-ex" deleted
 ```
 
-Delete the projet
+Delete the project
 
 ```
-$ oc delete project user99-lab07-s2i-cli
-project.project.openshift.io "user99-lab07-s2i-cli" deleted
+$ oc delete project lab07-s2i-cli
+project.project.openshift.io "lab07-s2i-cli" deleted
 ```
 
 Lab complete.

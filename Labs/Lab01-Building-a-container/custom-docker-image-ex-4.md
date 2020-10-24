@@ -48,4 +48,4 @@ $ sudo docker run -d --name my-python -p 80:80 -e NAME='Everybody' my-python:lat
 
 Refresh the browser, the response should have changed.
 
-Lab complete.
+Lab complete. Please move on to [2 Tier Monitoring Application](2-tier-monitoring-application-ex-5.md)
