@@ -35,7 +35,7 @@ Username: ibmadmin
 Password: 
 Login successful.
 
-You have access to 75 projects, the list has been suppressed. You can list all projects with 'oc projects'
+You have access to 65 projects, the list has been suppressed. You can list all projects with 'oc projects'
 
 Using project "default".
 ```
