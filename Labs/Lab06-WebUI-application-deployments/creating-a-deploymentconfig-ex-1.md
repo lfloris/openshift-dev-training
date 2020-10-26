@@ -32,7 +32,7 @@ $ oc adm policy add-scc-to-user anyuid -z default
 
 Review some of the other information in this form. For example, change the *Application* drop down to create a new application called `lab06`, and change the *Name* from `my-python` to `lab06-ex-1`.
 
-In the *Resources* section, select the Deployment Config radio button, as we will generate a new DeploymentConfig object from this exercise.2
+In the *Resources* section, select the Deployment Config radio button, as we will generate a new DeploymentConfig object from this exercise.
 
 Then select the check box to create a route to the application.
 
