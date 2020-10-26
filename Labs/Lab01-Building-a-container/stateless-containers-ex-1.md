@@ -30,7 +30,7 @@ $ exit
 Test the connection again. You should see the new message.
 ```
 $ curl http://localhost:8080
-<html><body><h1>It works!</h1></body></html>
+<html><body><h1>I've changed</h1></body></html>
 ```
 ​
 Because container storage is ephemeral, once the container is removed any changes you've made will be reverted back to the original configuration in the image. 
