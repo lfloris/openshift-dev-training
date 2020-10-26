@@ -24,7 +24,7 @@ Use the following specification for each component
 Load the sample data into the InfluxDB database which you can do by executing the following command. Remember to change the `--path` variable to point to location where the NOAA_data.txt resides within the container.
 
 ```
-influxdb influx -import -path=/path/to/NOAA_data.txt -precision=s -database=NOAA_water_database
+influx -import -path=/path/to/NOAA_data.txt -precision=s -database=NOAA_water_database
 ```
 
 **Grafana**
