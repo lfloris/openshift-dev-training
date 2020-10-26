@@ -9,7 +9,7 @@ If you have cloned the entire `openshift-dev-training` Git repo, change director
 To build the image, run the following
 
 ```
-$ sudo docker build -t my-python .
+$ sudo docker build -t my-python:v1 .
 ```
 
 The docker image should start building, and it will be available in the list of docker images
@@ -17,7 +17,7 @@ The docker image should start building, and it will be available in the list of 
 ```
 $ sudo docker images my-python
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-my-python           latest              44c13412dac4        47 seconds ago      131MB
+my-python           v1                  44c13412dac4        47 seconds ago      131MB
 ```
 
 We can now use this as a base image for a container deployment.
@@ -25,7 +25,7 @@ We can now use this as a base image for a container deployment.
 Deploy a new container from this image using exposing port 80 on the local machine. Note that if you did not clean up containers from previous exercises, you might get errors stating port 80 is still in use. Either remove the old container or choose a different port using the format `[HOSTPORT]:80`.
 
 ```
-$ sudo docker run -d --name my-python -p 80:80 my-python:latest
+$ sudo docker run -d --name my-python -p 80:80 my-python:v1
 ```
 
 The container should now be running at port 80, so check it by entering your local VM's IP address into a browser window. You should be presented with the 'Hello World' message, along with the hostname of the container.
@@ -43,9 +43,29 @@ As the Docker image was built from the Dockerfile that used an environment varia
 For example, use the `NAME` variable to post a different message
 
 ```
-$ sudo docker run -d --name my-python -p 80:80 -e NAME='Everybody' my-python:latest
+$ sudo docker run -d --name my-python -p 80:80 -e NAME='Everybody' my-python:v1
 ```
 
 Refresh the browser, the response should have changed.
+
+We can also create a new version of this image by editing the source code and rebuilding the image.
+
+Edit the `app.py` file and change the output message to something of your choice.
+
+Rebuild the image
+
+```
+$ sudo docker build -t my-python:v2 .
+```
+
+Create a new container using the new image, this time using port 81 on the host
+
+```
+$ sudo docker run -d --name my-python2 -p 81:80 my-python:v2
+```
+
+In the browser point to the new container at `localhost:81` to see your new message.
+
+Clean up both containers using `docker stop <container-name>` and `docker rm <container-name>`.
 
 Lab complete. Please move on to [2 Tier Monitoring Application](2-tier-monitoring-application-ex-5.md)
