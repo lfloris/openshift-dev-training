@@ -3,7 +3,7 @@
 In this lab we'll explore how to use Jenkins to build and deploy application on OpenShift.
 Sample Guest book application is used that uses IBM Liberty and Mongo DB. 
 
-## Setup project
+## Setup projects
 To get started, log into OpenShift using the Web Console, as described [here](../Getting-started/log-in-to-openshift.md).
 
 Once you're logged in, create a new project for this deployment. Go to Home > Projects in the navigation pane, then select 'Create Project'
@@ -13,6 +13,8 @@ Once you're logged in, create a new project for this deployment. Go to Home > Pr
 In the 'Create Project' dialogue box that appears, use the naming format `lab13-jenkins`. Completing the Display Name and Description fields are recommended, but optional.
 
 ![](img/create-project-dialog-ex-1.png)
+
+In the similar way create additional project named `lab13-jenkins-prod` which will represent production release of the application.
 
 ## Deploy Mongo DB
 The application is using Mongo DB to store guests data. We need to deploy it to our cluster first. 
@@ -73,3 +75,25 @@ Jenkins welcome screen should appear:
 Jenkins is successfully running.
 
 
+## Create deployment resources
+
+In this step resources for the build process will be loaded in to the build project. The resources provided here define the following artifacts:
+
+- An ImageStream for the application image. This will be populated by the Jenkins Pipeline
+- An ImageStream for WebSphere Liberty which will pull down the latest version of the ibmcom/websphere-liberty:kernel-ubi-min image and will monitor DockerHub for any updates.
+- A  `dockerStrategy` BuildConfig that will be used by the Jenkins Pipeline to build the application Docker image
+- A `jenkinsPipelineStrategy` BuildConfig that defines the Pipeline using the Jenkinsfile in GitHub
+
+
+To get started, log into OpenShift using the CLI, as described [here](../Getting-started/log-in-to-openshift.md). We could define these resources via Web UI, but it is much less error prone, and more repeatable to use yaml files.
+
+A set of helpful common `oc` commands can be found [here](../Getting-started/oc-commands.md).
+
+Go to the `openshift` directory and execute the following commands:
+
+```
+oc create -f imagestream-app.yaml
+oc create -f imagestream-liberty.yaml
+oc create -f build-image.yaml
+oc create -f build-config.yaml
+```

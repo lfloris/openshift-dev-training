@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  labels:
+    application: get-started-java
+  name: get-started-java-pipeline
+spec:
+  source:
+    git:
+      uri: https://github.com/gasgithub/get-started-java
+      ref: master
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+      env:
+        - name: APPLICATION_NAME
+          value: get-started-java
+  triggers:
+  - github:
+      secret: "mysecret"
+    type: GitHub
