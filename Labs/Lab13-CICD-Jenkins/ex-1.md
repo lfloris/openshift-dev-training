@@ -126,15 +126,13 @@ Application image is build using the following [Dockerfile](https://github.com/g
 Pipeline is using `deployment.yaml` file, which defines application related resources, that are required to create and run application. You may see its contents [here](https://github.com/gasgithub/get-started-java/blob/master/k8s/Jenkinsfile).
 
 
-### Define resources in the prrod namespace
+### Define resources in the prod namespace
 In addition we need to define imagestream resources also in the production space:
 
 ```
 oc project lab13-jenkins-prod
 oc create -f imagestream-app.yaml
 oc create -f imagestream-liberty.yaml
-oc create -f build-image.yaml
-oc create -f build-config.yaml
 ```
 
 ## Run the pipeline on OCP via Web UI
