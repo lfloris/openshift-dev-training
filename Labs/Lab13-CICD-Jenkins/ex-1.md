@@ -74,6 +74,15 @@ Jenkins welcome screen should appear:
 
 Jenkins is successfully running.
 
+### Update the Jenkins service account
+
+During provisioning of the Jenkins a service account with the name jenkins is created. This service account has privileges to create new artifacts only in the project that it is running in. In this scenario Jenkins will need to create artifacts in addition in `prod` project.
+
+Issue the commands below to allow the jenkins service account to edit artifacts in these project:
+
+```
+oc policy add-role-to-user edit system:serviceaccount:lab13-jenkins:jenkins -n lab13-jenkins-prod
+```
 
 ## Create deployment resources
 
@@ -88,6 +97,8 @@ In this step resources for the build process will be loaded in to the build proj
 To get started, log into OpenShift using the CLI, as described [here](../Getting-started/log-in-to-openshift.md). We could define these resources via Web UI, but it is much less error prone, and more repeatable to use yaml files.
 
 A set of helpful common `oc` commands can be found [here](../Getting-started/oc-commands.md).
+
+### Define resources in the build namespace
 
 Go to the `openshift` directory and execute the following commands:
 
@@ -114,10 +125,25 @@ Application image is build using the following [Dockerfile](https://github.com/g
 
 Pipeline is using `deployment.yaml` file, which defines application related resources, that are required to create and run application. You may see its contents [here](https://github.com/gasgithub/get-started-java/blob/master/k8s/Jenkinsfile).
 
-One additional step is to configure environment variable that will tell application how to access Mongo DB. In OpenShift it can be done via `Secrets`, which then can be mapped to environment variables expected by container.
 
+### Define resources in the prrod namespace
+In addition we need to define imagestream resources also in the production space:
+
+```
+oc project lab13-jenkins-prod
+oc create -f imagestream-app.yaml
+oc create -f imagestream-liberty.yaml
+oc create -f build-image.yaml
+oc create -f build-config.yaml
+```
 
 ## Run the pipeline on OCP via Web UI
+
+The newly created pipeline can be started from the RedHat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
+
+In the console, select 'Builds > Build Configs', then click 3 dots on the right and select `Start Build` from the popup menu.
+
+![](img/build-start.png)
 
 
 
