@@ -92,8 +92,33 @@ A set of helpful common `oc` commands can be found [here](../Getting-started/oc-
 Go to the `openshift` directory and execute the following commands:
 
 ```
+oc project lab13-jenkins
 oc create -f imagestream-app.yaml
 oc create -f imagestream-liberty.yaml
 oc create -f build-image.yaml
 oc create -f build-config.yaml
 ```
+
+You can verify via console that resouces were successfully created:
+
+![](img/imagestreams.png)
+
+![](img/buildconfigs.png)
+
+
+Jenkins build config will use the pipeline definition stored in the project repository in the `Jenkins` file. You may see its contents [here](https://github.com/gasgithub/get-started-java/blob/master/Jenkinsfile). In some cases you may have separate repository (gitops) which would hold your pipeline definitions and resource definitions.
+
+This pipeline will build and deploy application image to OpenShift.
+
+Application image is build using the following [Dockerfile](https://github.com/gasgithub/get-started-java/blob/master/Dockerfile)
+
+Pipeline is using `deployment.yaml` file, which defines application related resources, that are required to create and run application. You may see its contents [here](https://github.com/gasgithub/get-started-java/blob/master/k8s/Jenkinsfile).
+
+One additional step is to configure environment variable that will tell application how to access Mongo DB. In OpenShift it can be done via `Secrets`, which then can be mapped to environment variables expected by container.
+
+
+## Run the pipeline on OCP via Web UI
+
+
+
+
