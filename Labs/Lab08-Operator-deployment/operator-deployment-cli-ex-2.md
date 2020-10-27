@@ -2,9 +2,11 @@
 
 In this exercise, you'll learn how to deploy an operator using the CLI only. This exercise contains no guidance on what resources are required, you'll have to figure that out based on [Exercise 1](operator-deployment-we-ex-1.md).
 
-The operator to deploy in this exercise is the Redis Enterprise Operator from the Certified Operators catalog.
+The operator you will need to deploy in this exercise is the **Redis Enterprise Operator** from the Certified Operators catalog.
 
 ## Hints
+Use some of the `oc` commands from the previous exercise to discover the correct resources, channels and versions to deploy.
+
 This operator can be tricky to debug, as it requires additional resources such as Security Context Constraints to run properly. Since SCCs will be covered in a later topic, use the below commands to retrieve a valid SCC from the RedisLabs GitHub and create it
 
 ```

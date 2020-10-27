@@ -206,6 +206,6 @@ Here, we can select the 'Pods' tab and see if our PostgreSQL database pod is run
 
 We have successfully installed an Operator in a developer project and the developer user has created a new application from this Operator.
 
-Lab complete.
+Lab complete. Please move on to [Deploying an Operator from the CLI](operator-deployment-cli-ex-2.md)
 
 When you're finished, please clean up the resources created and delete the project.
