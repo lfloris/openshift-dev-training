@@ -48,7 +48,7 @@ data:
 Use `oc create -f <file>` to create the Secret
 
 ```
-$ oc create -f mariadb-root-pass.yaml
+$ oc create -f mariadb-secret.yaml
 secret/mariadb-root-pass created
 ```
 
