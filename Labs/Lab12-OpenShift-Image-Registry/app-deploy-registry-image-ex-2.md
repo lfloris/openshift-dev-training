@@ -21,7 +21,8 @@ The frontend Dockerfile is in the root [jpetstore](jpetstore/) directory, and th
 Create two new deployments using the images you pushed to the image registry in the previous steps. Use the below specification
 
 ### Frontend
-- Use the name `jpetstoreweb` for the deployment
+- Use the name `jpetstoreweb` for the DeploymentConfig
+- Set an `ImageChange` trigger on the DeploymentConfig to trigger a new rollout when the `latest` image tag is updated
 - Use 1 replica
 - Use the labels `app=jpetstoreweb`
 - Use the environment variable `VERSION` with the value of `1`
@@ -32,6 +33,7 @@ Create two new deployments using the images you pushed to the image registry in 
 
 ### Backend
 - Use the name `jpetstoredb` for the deployment
+- Tag the image as `v1`
 - Use the `containerPort` 3306
 - Use the following environment variables
     - MYSQL_ROOT_PASSWORD="foobar"
