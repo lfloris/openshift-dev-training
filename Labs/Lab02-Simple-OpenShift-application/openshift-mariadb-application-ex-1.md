@@ -124,7 +124,7 @@ $ create configmap mariadb-config --from-file=max_allowed.cnf
 configmap/mariadb-config created
 ```
 
-The manual YAML representation would be as follows
+The manual YAML representation would be as follows (you can view this using `oc get configmap mariadb-config -o yaml`)
 
 ```
 apiVersion: v1
@@ -182,7 +182,7 @@ We have two secrets to be added to this deployment
 1. mariadb-root-pass
 2. mariadb-user-creds
 
-For the mariadb-root-pass, this will be added as an envronment variable to the container. This reference goes in an `env` section within the `spec.template.spec.containers` array. Edit the `deployment.yaml` file and add the following contents under the line `name: mariadb`. The indentation in this snippet is done for you.
+For the mariadb-root-pass, this will be added as an environment variable to the container. This reference goes in an `env` section within the `spec.template.spec.containers` array. Edit the `deployment.yaml` file and add the following contents under the line `name: mariadb`. The indentation in this snippet is done for you.
 
 ```
         env:
