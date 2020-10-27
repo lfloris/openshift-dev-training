@@ -132,7 +132,7 @@ kind: ConfigMap
 metadata:
   name: mariadb-config
 data:
-  max_allowed_packet.cnf: |
+  max_allowed.cnf: |
     [mysqld]
     max_connections = 151
     max_user_connections = 145
