@@ -121,7 +121,7 @@ Verify the Statefulset was created
 ```
 $ oc get statefulset
 NAME      READY   AGE
-mongodb   0/3     3s
+mongo     0/3     3s
 
 $ oc get pods
 No resources found
