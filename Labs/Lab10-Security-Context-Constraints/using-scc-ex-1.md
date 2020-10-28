@@ -27,7 +27,7 @@ This example will show how a StatefulSet can be coupled with dynamic storage pro
 
 First, we'll create something called a Headless Service. A headless service is a service with a service IP but instead of load-balancing it will return the IPs of our associated Pods. This allows us to interact directly with the Pods instead of a proxy. It's as simple as specifying None for `.spec.clusterIP` and can be utilized with or without selectors. This becomes useful when you want to divert traffic to the individual addresses of each database pod as opposed to letting the service load balance across all pods assigned to the service. For example, for a high-availability database deployment where the leading database needs to keep track of the other cluster members and send data directly to each member pod, using a normal Service will not suffice as the data will be routed to a randomly selected load-balanced pod instead of the target. 
 
-To create the headless service, create a file calledd `headless-svc.yaml`
+To create the headless service, create a file called `headless-svc.yaml`
 
 ```
 apiVersion: v1
@@ -232,7 +232,7 @@ allowedCapabilities:
 - IPC_LOCK
 ```
 
-Also change the name of this SCC from `restricted` to `mongodb-scc`, replacing XX with your user ID that you have been using in the labs so far. You can also update the `kubernetes.io/description` if you wish.
+Also change the name of this SCC from `restricted` to `mongodb-scc`. You can also update the `kubernetes.io/description` if you wish.
 
 Lastly, we need to update the groups section from
 ```

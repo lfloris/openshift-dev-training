@@ -71,10 +71,10 @@ Create a `pod.yaml` from the following content
 apiVersion: v1
 kind: Pod
 metadata:
-  name: lab07-ex-1-
+  name: lab11-ex-1-
 spec:
   containers:
-  - name: lab07
+  - name: lab11
     image: polinux/stress
     resources:
       limits:
@@ -93,28 +93,28 @@ Deploy it to OpenShift
 
 ```
 $ oc create -f pod.yaml
-pod/lab011-ex-1-nhvl4 created
+pod/lab11-ex-1-nhvl4 created
 ```
 
 Because we used the `generateName` feature in the pod spec combined with `oc create`, we can keep redeploying the pod without having to edit the file and specify a new name. Repeat this step 4 times
 
 ```
 $ oc create -f pod.yaml
-pod/lab011-ex-1-wp8ts created
+pod/lab11-ex-1-wp8ts created
 ```
 
-On the fourth attempt, OpenShift shuld block us from creating more pods because we have gone over quota.
+On the fourth attempt, OpenShift should block us from creating more pods because we have gone over quota.
 
 ```
 $ oc get pods
 NAME                READY   STATUS    RESTARTS   AGE
-lab011-ex-1-cddsb   1/1     Running   0          37s
-lab011-ex-1-nhvl4   1/1     Running   0          2m43s
-lab011-ex-1-p7nln   1/1     Running   0          50s
-lab011-ex-1-wp8ts   1/1     Running   0          96s
+lab11-ex-1-cddsb   1/1     Running   0          37s
+lab11-ex-1-nhvl4   1/1     Running   0          2m43s
+lab11-ex-1-p7nln   1/1     Running   0          50s
+lab11-ex-1-wp8ts   1/1     Running   0          96s
 
 $ oc create -f pod.yaml 
-Error from server (Forbidden): error when creating "pod.yaml": pods "lab011-ex-1-jmhp5" is forbidden: exceeded quota: compute-resources, requested: limits.cpu=500m,pods=1, used: limits.cpu=2,pods=4, limited: limits.cpu=2,pods=4
+Error from server (Forbidden): error when creating "pod.yaml": pods "lab11-ex-1-jmhp5" is forbidden: exceeded quota: compute-resources, requested: limits.cpu=500m,pods=1, used: limits.cpu=2,pods=4, limited: limits.cpu=2,pods=4
 
 ```
 
@@ -156,15 +156,15 @@ $ oc create -f deployment.yaml
 deployment.apps/lab11-deploy-dqgpn created
 ```
 
-Now check the currently deployedd pods
+Now check the currently deployed pods
 
 ```
 $ oc get pods
 NAME                READY   STATUS    RESTARTS   AGE
-lab011-ex-1-cddsb   1/1     Running   0          5m1s
-lab011-ex-1-nhvl4   1/1     Running   0          7m7s
-lab011-ex-1-p7nln   1/1     Running   0          5m14s
-lab011-ex-1-wp8ts   1/1     Running   0          6m
+lab11-ex-1-cddsb    1/1     Running   0          5m1s
+lab11-ex-1-nhvl4    1/1     Running   0          7m7s
+lab11-ex-1-p7nln    1/1     Running   0          5m14s
+lab11-ex-1-wp8ts    1/1     Running   0          6m
 ```
 
 Despite creating deployments with 2 replicas defined, the scheduler will not create any new pods until we are under quota. Whilst it's not completely obvious at first, since we're expecting 6 pods and only see 4, we can check the events to look for errors.
@@ -176,7 +176,7 @@ LAST SEEN   TYPE      REASON              OBJECT                          MESSAG
 104s        Warning   FailedCreate        replicaset/lab11-deploy-dqgpn-f4894b6b8   Error creating: pods "lab11-deploy-dqgpn-f4894b6b8-qzm26" is forbidden: exceeded quota: compute-resources, requested: limits.cpu=500m,pods=1, used: limits.cpu=2,pods=4, limited: limits.cpu=2,pods=4
 ```
 
-So now we know why we don't have 6 pods - we have exceeded the quota. This same process can apply to a range of different resource types. More information andd examples can be found at https://docs.openshift.com/container-platform/4.3/applications/quotas/quotas-setting-per-project.html
+So now we know why we don't have 6 pods - we have exceeded the quota. This same process can apply to a range of different resource types. More information andd examples can be found [here](https://docs.openshift.com/container-platform/4.4/applications/quotas/quotas-setting-per-project.html)
 
 When ready, remove the resources created and the project.
 
