@@ -176,7 +176,7 @@ LAST SEEN   TYPE      REASON              OBJECT                          MESSAG
 104s        Warning   FailedCreate        replicaset/lab11-deploy-dqgpn-f4894b6b8   Error creating: pods "lab11-deploy-dqgpn-f4894b6b8-qzm26" is forbidden: exceeded quota: compute-resources, requested: limits.cpu=500m,pods=1, used: limits.cpu=2,pods=4, limited: limits.cpu=2,pods=4
 ```
 
-So now we know why we don't have 6 pods - we have exceeded the quota. This same process can apply to a range of different resource types. More information andd examples can be found [here](https://docs.openshift.com/container-platform/4.4/applications/quotas/quotas-setting-per-project.html)
+So now we know why we don't have 6 pods - we have exceeded the quota. This same process can apply to a range of different resource types. More information and examples can be found [here](https://docs.openshift.com/container-platform/4.4/applications/quotas/quotas-setting-per-project.html)
 
 When ready, remove the resources created and the project.
 
