@@ -243,17 +243,6 @@ allowedCapabilities:
 
 Also change the name of this SCC from `restricted` to `mongodb-scc`. You can also update the `kubernetes.io/description` if you wish.
 
-Lastly, we need to update the groups section from
-```
-groups:
-- system:authenticated
-```
-to
-```
-groups:
-- system:serviceaccounts:lab10-scc
-```
-
 Remember to replace `lab10-scc` with your own project name.
 
 Save and exit the file.
