@@ -172,4 +172,27 @@ Return to the OpenShift Console and validate that the pipeline is now complete.
 ## Validate deployed applicaton
 
 Now that the pipeline is complete, validate the application is deployed and running in build and prod namespaces.
+Switch to the 'Developer' mode and navigate to the 'Topology' view. Click `get-started-java-deployment`.
 
+![](img/topology-view.png)
+
+Click displayed Route to open browser page with application. By default it points to the root context of the host and you will see default Liberty start page. Add `/myapp` to the URL to access the application.
+
+![](img/deployed-application.png)
+
+Repeat the validations for the prod project.
+
+
+## Automatically triggering pipeline from Git
+
+Usually if your cluster is accessible from your code repository building process can be automatically triggered by commit to source repo. in the pipeline details you can see URL that can be configured in GitHub webhooks:
+
+![](img/webhook.png)
+
+In our environment, cluster is not publicly accessible, so we cannot configure it.
+
+Lab completed.
+
+## Clean up
+
+To clean up environment remove `lab13-jenkins` and `lab13-jenkins-prod` projects.
