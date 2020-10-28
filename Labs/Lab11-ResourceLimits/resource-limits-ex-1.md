@@ -71,7 +71,7 @@ Create a `pod.yaml` from the following content
 apiVersion: v1
 kind: Pod
 metadata:
-  name: lab11-ex-1-
+  generateName: lab11-ex-1-
 spec:
   containers:
   - name: lab11
@@ -82,7 +82,7 @@ spec:
         cpu: 200m
       requests:
         memory: 100Mi
-        cpu: 500m
+        cpu: 100m
     command: ["stress"]
     args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
 ```
