@@ -1,13 +1,11 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  annotations:
-    openshift.io/host.generated: "true"
   labels:
     app: wordpress
-  name: wordpress
+  name: wordpress-new
 spec:
-  host: wordpress-wordpress-sql.apps.demo.idmdte.net
+  host: ''
   port:
     targetPort: 80
   to:
