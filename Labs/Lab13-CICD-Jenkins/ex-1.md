@@ -144,5 +144,32 @@ In the console, select 'Builds > Build Configs', then click 3 dots on the right 
 ![](img/build-start.png)
 
 
+When the pipeline starts, click the view log link to go to the Jenkins administration console. Note that it may take a couple of minutes before the view log link appears on the first pipeline build 
 
+![](img/build-view-log.png)
+
+When prompted, log in with your OpenShift account and grant the required access permissions. The Jenkins console log will be displayed as shown below: 
+
+![](img/build-jenkins-log.png)
+
+Return to the OpenShift Console and track the progress of the pipeline 
+
+![](img/build-pipeline.png)
+
+The pipeline will eventually stop at the Promotion Gate for approval to deploy to Production. Click the `Input Required` link as shown below
+
+![](img/build-gate.png)
+
+When the Promote application to Production question is displayed, click Proceed
+
+![](img/build-jenkins-approve.png)
+
+Return to the OpenShift Console and validate that the pipeline is now complete.
+
+![](img/build-pipeline-complete.png)
+
+
+## Validate deployed applicaton
+
+Now that the pipeline is complete, validate the application is deployed and running in build and prod namespaces.
 
