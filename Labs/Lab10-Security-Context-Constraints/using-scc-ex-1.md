@@ -58,11 +58,15 @@ Next we need to deploy the StatefulSet. Below is the definition for a MongoDB da
 Create a new file `mongodb-sts.yaml`
 
 ```
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongo
 spec:
+  selector:
+    matchLabels:
+      role: mongo
+      environment: test
   serviceName: "mongo"
   replicas: 3
   template:
@@ -115,6 +119,11 @@ spec:
           storage: 2Gi
 ```
 
+Create the StatefulSet
+
+```
+$ oc create -f mongodb-sts.yaml
+```
 
 Verify the Statefulset was created
 
