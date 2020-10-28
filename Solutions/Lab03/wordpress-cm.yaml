@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wp-config
+data:
+  MYSQL_DATABASE: wordpressdb
+  WORDPRESS_DB_HOST: wordpress-mysql:3306
