@@ -36,7 +36,7 @@ The overall design looks as follows
 
 ![](img/wordpress-sql-arch.png)
 
-To get started, you can use the following base deployment specifications.
+To get started, you can use the following base deployment specifications as a template. You will need to add additional Secrets, ConfigMaps, Resources and NodeSelectors to these specifications.
 
 **Wordpress**
 ```
@@ -51,8 +51,6 @@ spec:
     matchLabels:
       app: wordpress
       tier: frontend
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -86,8 +84,6 @@ spec:
     matchLabels:
       app: wordpress
       tier: mysql
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -111,19 +107,21 @@ spec:
 
 Use the following specifications for your application:
 
-Use a ConfigMap to store the following environment variables
-- `WORDPRESS_DB_HOST` for the name of the MySQL Service
-- `MYSQL_DATABASE` for the MySQL database 
+Use a ConfigMap to store the following environment variables for the Wordpress deployment
+- `WORDPRESS_DB_HOST` for the name of the MySQL Service that Wordpress will use for the database connection
+- `MYSQL_DATABASE` for the name of the MySQL database Wordpress will use
 
-Use a Secret to store the following sensitive information
+Use a Secret to store the following sensitive information for the Wordpress deployment
 - `WORDPRESS_DB_PASSWORD` for the Wordpress database password
+
+Use a Secret to store the following sensitive information for the MySQL deployment
 - `MYSQL_USER` for the MySQL user name
 - `MYSQL_PASSWORD` for the MySQL user password specified in `MYSQL_USER`
 - `MYSQL_ROOT_PASSWORD` for the MySQL root user password
   
 Use the following resource requests and limits
 
-| | WordPress | MySQL |
+| | Wordpress | MySQL |
 |-| ---|---|
 | CPU request | 100m | 100m |
 | CPU limit | 200m | 200m |
@@ -136,8 +134,6 @@ Add a nodeSelector to the MySQL back end to target nodes labelled `apps=backend`
 Expose the Wordpress front end.
 
 Create a new route for the wordpress service only.
-
-You'll need to create a few ConfigMaps and secrets, then add them to these deployment files as we did in Lab02.
 
 Once your files are ready to deploy to OpenShift, you can use `oc create -f <filename>` to deploy it within your project.
 
