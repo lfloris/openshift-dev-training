@@ -82,7 +82,7 @@ spec:
         cpu: 500m
       requests:
         memory: 100Mi
-        cpu: 200m
+        cpu: 100m
     command: ["stress"]
     args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
 ```
