@@ -234,7 +234,7 @@ First save the `restricted` SCC locally
 $ oc get scc restricted -o yaml --export > mongodb-scc.yaml
 ```
 
-Edit this file and add the section `allowedCapabilities: null` to the following
+Edit this file and replace the section `allowedCapabilities: null` with the following
 
 ```
 allowedCapabilities:
