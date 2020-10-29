@@ -195,4 +195,6 @@ Lab completed.
 
 ## Clean up
 
+Do not perform these steps if you plan to do 'Lab 14 - Liberty Operator'
 To clean up environment remove `lab13-jenkins` and `lab13-jenkins-prod` projects.
+
