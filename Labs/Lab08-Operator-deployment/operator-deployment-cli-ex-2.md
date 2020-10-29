@@ -11,7 +11,6 @@ This operator can be tricky to debug, as it requires additional resources such a
 
 ```
 $ curl -O https://raw.githubusercontent.com/RedisLabs/redis-enterprise-k8s-docs/master/openshift/scc.yaml
-
 $ oc apply -f scc.yaml
 securitycontextconstraints.security.openshift.io/redis-enterprise-scc created
 ```
@@ -22,22 +21,9 @@ You'll then need to apply this SCC to the Service Account created during deploym
 oc adm policy add-scc-to-user redis-enterprise-scc -z <service-account-name>
 ```
 
-You can expose the Redis Enterprise UI using an OpenShift Route. Use the below as a template for an SSL Passthrough (simply using `oc expose <svc>` on the UI service does not work in this scenario, we need a more complex route configuration)
+You can expose the Redis Enterprise UI using an OpenShift Route. Use the below command to create an SSL passthrough Route (simply using `oc expose <svc>` on the UI service does not work in this scenario, we need a more complex route configuration)
 
 ```
-kind: Route
-apiVersion: route.openshift.io/v1
-metadata:
-  name: redis-ui
-  namespace: lab08-operators
-spec:
-  to:
-    kind: Service
-    name: <service-name>
-    weight: 100
-  port:
-    targetPort: ui
-  tls:
-    termination: passthrough
-    insecureEdgeTerminationPolicy: Redirect
+ $ create route passthrough redis-ui --service rec-ui --port ui --insecure-policy Redirect
+ route.route.openshift.io/redis-ui created
 ```

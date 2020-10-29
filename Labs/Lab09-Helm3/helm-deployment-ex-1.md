@@ -194,15 +194,14 @@ Edit the `python-app/values.yaml` file to add our new `myuserid` parameter and v
 
 We need to do the following
 
-1. Change the `image.repository` from `repository: nginx` to `quay.io/lfloris/my-python`
-2. Add the following parameter `image.tag: v1` so that the code block looks like the following
+1. Change the `image.repository` value from `nginx` to `quay.io/lfloris/my-python` and add the parameter `v1` to the `image.tag` so that the code block looks like the following
 ```
 image:
-  repository: nginx
+  repository: quay.io/lfloris/my-python
   pullPolicy: IfNotPresent
   tag: v1
 ```
-3. Add `myuserid: ibmadmin` to the file.
+3. Add the line `myuserid: ibmadmin` to the file on a new line.
 
 Once the changes have been made, our Helm application templates are now ready for testing and packaging.
 

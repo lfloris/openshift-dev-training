@@ -8,7 +8,7 @@ Once you're logged in, create a new project for this deployment. Go to Home > Pr
 
 ![](../Getting-started/img/create-project.png)
 
-In the 'Create Project' dialogue box that appears, use the naming format `userXX-lab06-di-ui`, replacing `userXX` with your user ID. Completing the Display Name and Description fields are recommended, but optional.
+In the 'Create Project' dialogue box that appears, enter a project name, such  as `lab06-di-ui`. Completing the Display Name and Description fields are recommended, but optional.
 
 ![](img/create-project-dialog-ex-2.png)
 
@@ -50,11 +50,11 @@ During this time we can also view the pods in the project. Here we see that ther
 
 ![](img/app-pods-building-ex-2.png)
 
-Inspect the logs of the build pod. You can see all of the steps taken to reach a sucessful build.
+Inspect the logs of the build pod. You can see all of the steps taken to reach a successful build.
 
 ![](img/app-build-logs-ex-2.png)
 
-Finally, once the process is complete, we should see that the topology view reports a sucessful deployment of our simple Python application.
+Finally, once the process is complete, we should see that the topology view reports a successful deployment of our simple Python application.
 
 ![](img/app-deploy-success-ex-2.png)
 

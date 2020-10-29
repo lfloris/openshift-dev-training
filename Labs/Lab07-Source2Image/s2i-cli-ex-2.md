@@ -42,12 +42,12 @@ $ oc new-build centos/nodejs-8-centos7~https://github.com/sclorg/nodejs-ex.git
 After running the command explore what the objects that come as a result of the build command:
 
 ```
-$ oc get is                                                                               
+$ oc get imagestream
 NAME        IMAGE REPOSITORY                                                                      TAGS     UPDATED
 nodejs-ex   default-route-openshift-image-registry.apps.demo.ibmdte.net/lab07-s2i-cli/nodejs-ex   latest   23 seconds ago
 ```
 
-Take a note of how the build command created two image streams. Image streams are a way for OpenShift to keep a central index of images that are used for deployments. The Image stream point to the internal registry in which the images are stored. At any point, if the image to which the IS points to is renewed, the ImageStream will keep track of that by assigning a new image tag. The build command created two IS one for the builder image and one for the application container image.
+Notice how the build command created two image streams. Image streams are a way for OpenShift to keep a central index of images that are used for deployments. The ImageStream points to the internal registry in which the images are stored. At any point, if the image to which the ImageStream points to is renewed, the ImageStream will keep track of that by assigning a new image tag. The build command created two ImageStream one for the builder image and one for the application container image.
 
 ```
 $ oc get builds

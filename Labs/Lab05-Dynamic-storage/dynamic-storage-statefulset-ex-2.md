@@ -124,7 +124,7 @@ web-1   1/1     Running   0          6m48s
 web-2   1/1     Running   0          6m44s
 ```
 
-Check the PVCs created. You should see one is created for each pod, and the name should match up with the naming convention <metadata.name>-<sts-name>-<index>.
+Check the PVCs created. You should see one is created for each pod, and the name should match up with the naming convention [metadata-name]-[sts-name]-[index].
 ```
 $ oc get pvc
 NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
@@ -145,7 +145,7 @@ We should now see that the number of desired replicas has increased to 5, and th
 ```
 $ oc get statefulset
 NAME        READY   AGE
-web         0/5     3m56s
+web         3/5     3m56s
 
 $ oc get pods
 NAME    READY   STATUS    RESTARTS   AGE

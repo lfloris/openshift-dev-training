@@ -56,15 +56,15 @@ The IP here is `10.0.0.202`.
 
 First we'll create a Persistent Volume (PV).
 
-Create a new file `lab-pv.yaml` with the following content, replacing the `user99` value with your own user ID. This makes sure the associated PVC will bind to your PV.
+Create a new file `lab-pv.yaml` with the following content. Here we use a label called `user:ibmadmin`. This makes sure the associated PVC will bind to your PV.
 
 ```
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: pv-user99-vol1
+  name: vol1
   labels:
-    user: user99
+    user: ibmadmin
 spec:
   capacity:
     storage: 1Gi
@@ -80,9 +80,9 @@ Create the PV using `oc create -f lab-pv.yaml`
 Use `oc get pv` to ensure the PV you just created says `Available`
 
 ```
-$ oc get pv pv-user99-vol1
+$ oc get pv vol1
 NAME             CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
-pv-user99-vol1   1Gi        RWX            Retain           Available                                   105s
+vol1             1Gi        RWX            Retain           Available                                   105s
 ```
 
 Next, we need to create a Persistent Volume Claim (PVC) that will bind to this PV. OpenShift will match an available PV to a new PVC by using several factors:
@@ -100,7 +100,7 @@ Create a new file `lab-pvc.yaml` with the following content
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: user99-pvc-vol1
+  name: vol1
 spec:
   accessModes:
     - ReadWriteMany
@@ -109,7 +109,7 @@ spec:
       storage: 1Gi
   selector:
     matchLabels:
-      user: user99
+      user: ibmadmin
   storageClassName: ""
 ```
 
@@ -122,7 +122,7 @@ Check that the new PVC is now `Bound` to the desired PV.
 ```
 $ oc get pvc
 NAME              STATUS   VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-user99-pvc-vol1   Bound    pv-user99   1Gi        RWX                           3s
+vol1              Bound    vol1        1Gi        RWX                           3s
 ```
 
 Now that we see the PVC is bound to the PV created earlier, we can go ahead and create an application to use that volume.
@@ -133,21 +133,17 @@ Create the following MySQL app
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress-mysql
+  name: mysql
   labels:
-    app: wordpress
+    app: mysql
 spec:
   selector:
     matchLabels:
-      app: wordpress
-      tier: mysql
-  strategy:
-    type: Recreate
+      app: mysql
   template:
     metadata:
       labels:
-        app: wordpress
-        tier: mysql
+        app: mysql
     spec:
       containers:
       - image: mysql:5.6
@@ -164,7 +160,7 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: user99-pvc-vol1
+          claimName: vol1
 
 ```
 
@@ -173,7 +169,7 @@ Note the use of the following volume:
 volumes:
 - name: mysql-persistent-storage
   persistentVolumeClaim:
-    claimName: user99-pvc-vol1
+    claimName: vol1
 ```
 
 We have told the scheduler that we will use an existing PVC.
@@ -186,7 +182,7 @@ NAME                               READY   STATUS        RESTARTS   AGE
 wordpress-mysql-84b76fbf6b-t9pc4   0/1     Error               3          48s
 ```
 
-Since the pod is in `ERROR` state, we know that the scheduler has already succesfully created the pod, assigned the required resources and found the correct Persistent Volume Claim we created earlier. So what could be wrong?
+Since the pod is in `ERROR` state, we know that the scheduler has already successfully created the pod, assigned the required resources and found the correct Persistent Volume Claim we created earlier. So what could be wrong?
 
 Inspect the pod logs to try to identify the root cause of why the pod cannot run properly. 
 
@@ -268,9 +264,9 @@ Adapt the default YAML to look similar to the following
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: pv-user99-vol2
+  name: vol2
   labels:
-    user: user99
+    user: ibmadmin
 spec:
   capacity:
     storage: 1Gi
@@ -303,7 +299,7 @@ Input the following YAML
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: user99-pvc-vol2
+  name: vol2
 spec:
   accessModes:
     - ReadWriteMany
@@ -312,7 +308,7 @@ spec:
       storage: 1Gi
   selector:
     matchLabels:
-      user: user99
+      user: ibmadmin
   storageClassName: ""
 ```
 
@@ -329,6 +325,40 @@ This should present you with another summary screen, showing the new PVC as Boun
 Now we're ready to create another application using this PVC.
 
 Use the same MySQL application template as created earlier, just changing the deployment `name` field and the `claimName` field.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql2
+  labels:
+    app: mysql2
+spec:
+  selector:
+    matchLabels:
+      app: mysql2
+  template:
+    metadata:
+      labels:
+        app: mysql2
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: passw0rd
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: vol2
+```
 
 When finished, remove all of the resources you created and the project.
 
