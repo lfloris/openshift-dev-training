@@ -168,5 +168,15 @@ To display thread dump type:
 $ more javacore.*
 ```
 
+## Enable tracing on the running server (optional)
+
+This is optional, challenging part, no detailed instruction provided :-)
+Using similar steps try to use Trace API to enable following trace `traceSpecification: "*=info:com.ibm.ws.webcontainer*=all"`.
+To disable tracing you will need either set `disable` to `true` or delete trace resource.
+
+Generated trace files, along with `messages.log` files, will be in the folder using format `/serviceability/NAMESPACE/POD_NAME/`
+
+
+
 Lab completed.
 
