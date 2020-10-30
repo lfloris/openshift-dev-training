@@ -1,0 +1,22 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    application: get-started-java
+  name: get-started-java
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: get-started-java:latest
+  source:
+    type: Binary
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: websphere-liberty:kernel-ubi-min
+      dockerfilePath: Dockerfile
+      noCache: true
+      forcePull: true
+    type: Source

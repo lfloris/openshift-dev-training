@@ -1,0 +1,21 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    application: websphere-liberty
+  name: websphere-liberty
+spec:
+  dockerImageRepostitory: ibmcom/websphere-liberty:kernel-ubi-min
+  lookupPolicy:
+    local: false
+  tags:
+    - annotations: null
+      name: latest
+      from:
+        kind: DockerImage
+        name: ibmcom/websphere-liberty:kernel-ubi-min
+    - annotations: null
+      name: kernel-ubi-min
+      from:
+        kind: DockerImage
+        name: ibmcom/websphere-liberty:kernel-ubi-min
