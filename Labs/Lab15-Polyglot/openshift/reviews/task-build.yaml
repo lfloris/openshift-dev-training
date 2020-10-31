@@ -1,0 +1,65 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: reviews-build-push
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+    params:
+      - name: VERSION
+        description: The version of the nodejs
+        default: 'latest'
+        type: string
+      - name: PATH_CONTEXT
+        description: The location of the path to run s2i from.
+        default: "src/reviews"
+        type: string
+      - name: TLSVERIFY
+        description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
+        default: "false"
+        type: string
+  outputs:
+    resources:
+      - name: image
+        type: image
+  steps:
+    - name: gradle-clean
+      image: docker.io/gradle:4.8.1
+      workingdir: /workspace/source/$(inputs.params.PATH_CONTEXT)
+      command: ['gradle', 'clean']
+      volumeMounts:
+        - name: varlibcontainers
+          mountPath: /var/lib/containers
+      securityContext:
+        privileged: true
+    - name: gradle-build
+      image: docker.io/gradle:4.8.1
+      workingdir: /workspace/source/$(inputs.params.PATH_CONTEXT)
+      command: ['gradle', 'build']
+      volumeMounts:
+        - name: varlibcontainers
+          mountPath: /var/lib/containers
+      securityContext:
+        privileged: true        
+    - name: build
+      image: quay.io/buildah/stable:v1.11.0
+      workingdir: /workspace/source/$(inputs.params.PATH_CONTEXT)/reviews-wlpcfg
+      command: ['buildah', 'bud', '--tls-verify=$(inputs.params.TLSVERIFY)', '--layers', '-f', 'Dockerfile', '-t', '$(outputs.resources.image.url)', '.']
+      volumeMounts:
+        - name: varlibcontainers
+          mountPath: /var/lib/containers
+      securityContext:
+        privileged: true
+    - name: push
+      image: quay.io/buildah/stable:v1.11.0
+      command: ['buildah', 'push', '--tls-verify=$(inputs.params.TLSVERIFY)', '$(outputs.resources.image.url)', 'docker://$(outputs.resources.image.url)']
+      volumeMounts:
+        - name: varlibcontainers
+          mountPath: /var/lib/containers
+      securityContext:
+        privileged: true
+  volumes:
+    - name: varlibcontainers
+      emptyDir: {}
