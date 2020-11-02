@@ -1,4 +1,4 @@
-# Exercise 1 - Deploying Applications with Jenkins CI/CD
+# Exercise 1 - Deploying application using Liberty Operator
 
 In this lab we'll explore how to use Liberty Operator to deploy application on OpenShift.
 Sample Guest book application is used that uses IBM Liberty and Mongo DB that was used in previous example.
