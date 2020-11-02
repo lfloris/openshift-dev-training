@@ -1,11 +1,7 @@
-# DRAFT INSTRUCTIONS
-May contain errors and missing some steps ;-)
-
 # Exercise 1 - Deploying Polyglot application
 In this lab you will deploy polyglot application (the microservices building the app are written in different languages).
 
 ![](img/noistio.svg)
-
 
 
 
