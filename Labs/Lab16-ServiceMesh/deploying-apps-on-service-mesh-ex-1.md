@@ -334,9 +334,9 @@ A span represents a logical unit of work in Jaeger that has an operation name, t
 
 Using Jaeger, we can view all the requests that pass through our Bookinfo microservices application and visualize metrics such as service execution times and potential latency issues.
 
-Use the following URL to access the Kiali dashboard
+Use the following URL to access the Jaeger dashboard
 
-https://kiali-istio-system.apps.demo.ibmdte.net
+https://jaeger-istio-system.apps.demo.ibmdte.net
 
 Log in with `ibmuser`.
 
