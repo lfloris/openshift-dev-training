@@ -1,9 +1,6 @@
 from flask import Flask
-from redis import Redis, RedisError
 import os
 import socket
-
-# Connect to Redis
 
 app = Flask(__name__)
 
@@ -16,4 +13,4 @@ def hello():
     return 'My hostname is %s'
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=8080)
