@@ -79,12 +79,10 @@ spec:
   selector:
     matchLabels:
       {{- include "python-app.selectorLabels" . | nindent 6 }}
-      user: {{ .Values.myuserid }}
   template:
     metadata:
       labels:
         {{- include "python-app.selectorLabels" . | nindent 8 }}
-        user: {{ .Values.myuserid }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -142,14 +140,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "python-app.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "python-app.selectorLabels" . | nindent 6 }}
       user: {{ .Values.myuserid }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "python-app.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "python-app.selectorLabels" . | nindent 8 }}
         user: {{ .Values.myuserid }}
 ```
 
