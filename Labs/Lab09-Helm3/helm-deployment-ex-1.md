@@ -145,7 +145,7 @@ will be changed to:
               protocol: TCP
 ```
 
-To further customise it for this exercise, let's see how we can add some Helm templating parameters to it. For this, we'll add an additional environment variable `NAME` to the deployed pods. We're going to do this by adding the following section:
+To further customise it for this exercise, let's see how we can add some Helm templating parameters to it. For this, we'll add an additional environment variable `NAME` to the deployed pods. We're going to do this by adding the following section to the `deployment.yaml`
 
 ```
           env:
@@ -153,8 +153,7 @@ To further customise it for this exercise, let's see how we can add some Helm te
               value: {{ .Values.name }}    
 ```
 
-to the `deployment.yaml`. Make sure you are adding it on the same ident level as `readinessProbe` 
-The resulting code block would be this:
+Ensure you are adding it on the same indent level as `readinessProbe`. The resulting code block would look like this:
 
 ```
           readinessProbe:
@@ -167,7 +166,7 @@ The resulting code block would be this:
 
 ```
  
- Later use the `values.yaml` file to pass in a new value for the `NAME` parameter. Whilst this particular example is not that complex, it demonstrates how we can pass simple values from the values file (and subsequently the command line) through to a Helm template that we can repeatedly deploy as many times as we want with different values. We'll see this in action later on in the lab.
+Later use the `values.yaml` file to pass in a new value for the `NAME` parameter. Whilst this particular example is not that complex, it demonstrates how we can pass simple values from the values file (and subsequently the command line) through to a Helm template that we can repeatedly deploy as many times as we want with different values. We'll see this in action later on in the lab.
 
 Also change the `image` section from
 
@@ -200,7 +199,7 @@ image:
 
 Once the changes have been made, our Helm application templates are now ready for testing and packaging.
 
-Before packaging the application and deploying to OpenShift, it's a good idea to use the `helm lint` command. The Helm linter will run the application through the templating engine and look for anomolies between the values and your template definitions, and display any errors found. The run the linter, change directory to the parent directory (using `cd ..` or similar) and run `helm lint <chart-dir>`. If there are any errors, correct them and re-run the lint command until you receive the message `1 chart(s) linted, no failures`
+Before packaging the application and deploying to OpenShift, it's a good idea to use the `helm lint` command. The Helm linter will run the application through the templating engine and look for anomalies between the values and your template definitions, and display any errors found. The run the linter, change directory to the parent directory (using `cd ..` or similar) and run `helm lint <chart-dir>`. If there are any errors, correct them and re-run the lint command until you receive the message `1 chart(s) linted, no failures`
 
 Run `helm lint` on your application directory to check for errors.
 
@@ -373,7 +372,7 @@ my-python       lab09-helm      1               2020-11-06 16:55:33.6011648 +010
 my-python-v1    lab09-helm      1               2020-11-06 17:09:15.8205854 +0100 CET   deployed        python-app-0.1.1        1.16.0
 ```
 
-To remove helm realese issue `helm uninstall RELEASE_NAME` e.g. :
+To remove helm release issue `helm uninstall RELEASE_NAME` e.g. :
 
 ```
 $ helm uninstall my-python-v1
