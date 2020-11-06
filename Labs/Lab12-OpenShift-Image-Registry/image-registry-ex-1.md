@@ -61,12 +61,7 @@ NAME       IMAGE REPOSITORY                                                     
 mypython   default-route-openshift-image-registry.apps.demo.ibmdte.net/lab12-image-reg/mypython   latest      About a minute ago
 ```
 
-Now we can create a new application based on the image we just pushed. For this, we'll use a shortcut available from the `oc` cli to create a new DeploymentConfig from the image name. First, since we know this particular image requires the `anyuid` SCC, apply that to the default ServiceAccount
-
-```
-$ oc adm policy add-scc-to-user anyuid -z default
-securitycontextconstraints.security.openshift.io/anyuid added to: ["system:serviceaccount:lab12-image-reg:default"]
-```
+Now we can create a new application based on the image we just pushed. For this, we'll use a shortcut available from the `oc` cli to create a new DeploymentConfig from the image name. 
 
 Create the DeploymentConfig using the `mypython:latest` image
 ```

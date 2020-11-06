@@ -1,4 +1,4 @@
-FROM python:2.7-slim
+FROM python:3.8-slim
 
 # Set the working directory to /app
 WORKDIR /app
@@ -9,8 +9,8 @@ ADD . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
 
 # Define environment variable
 ENV NAME 'Bootcamp Lab06'

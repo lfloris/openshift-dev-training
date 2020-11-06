@@ -22,13 +22,13 @@ my-python           v1                  44c13412dac4        47 seconds ago      
 
 We can now use this as a base image for a container deployment.
 
-Deploy a new container from this image using exposing port 8080 on the local machine. Note that if you did not clean up containers from previous exercises, you might get errors stating port 8080 is still in use. Either remove the old container or choose a different port using the format `[HOSTPORT]:8080`.
+Deploy a new container from this image using exposing port 8080 on the local machine. Note that if you did not clean up containers from previous exercises, you might get errors stating port 8080 is still in use. Either remove the old container or choose a different port using the format `localhost:[HOSTPORT]`.
 
 ```
 $ sudo docker run -d --name my-python -p 8080:8080 my-python:v1
 ```
 
-The container should now be running at port 8080, so check it by entering your local VM's IP address into a browser window. You should be presented with the 'Hello World' message, along with the hostname of the container.
+The container should now be running at port 8080, so check it by entering your local VM's IP address with port 8080 into a browser window. You should be presented with the 'Hello World' message, along with the hostname of the container.
 
 ![](img/python-helloworld.png)
 
@@ -61,10 +61,10 @@ $ sudo docker build -t my-python:v2 .
 Create a new container using the new image, this time using port 81 on the host
 
 ```
-$ sudo docker run -d --name my-python2 -p 81:8080 my-python:v2
+$ sudo docker run -d --name my-python2 -p 8081:8080 my-python:v2
 ```
 
-In the browser point to the new container at `localhost:81` to see your new message.
+In the browser point to the new container at `localhost:8081` to see your new message.
 
 Clean up both containers using `docker stop <container-name>` and `docker rm <container-name>`.
 

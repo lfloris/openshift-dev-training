@@ -24,12 +24,6 @@ In the Image Name field, enter 'quay.io/lfloris/my-python:latest`, then select t
 
 This gives you some information about the image, including some potential security risks. In this example the container runs as the root user. At this point, as a developer, if you know that you don't have the capabilities to run this container image, you would typically address the issues by creating a new base image and uploading to the target repository, in this case `quay.io`.
 
-You will need to apply the `anyuid` Security Context Constraint (SCC) to your project to allow the container to work correctly. Security Context Constraints will be covered in a later lab. To add the `anyuid` SCC to your project, you would run the following command
-
-```
-$ oc adm policy add-scc-to-user anyuid -z default
-```
-
 Review some of the other information in this form. For example, change the *Application* drop down to create a new application called `lab06`, and change the *Name* from `my-python` to `lab06-ex-1`.
 
 In the *Resources* section, select the Deployment Config radio button, as we will generate a new DeploymentConfig object from this exercise.
