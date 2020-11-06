@@ -125,29 +125,49 @@ spec:
     {{- end }}
 ```
 
-We can see that we already have a fairly standard Deployment resource pre-populated, and for the exercise of deploying our simple Python application, it is actually fairly well suited to leave it as it is as it contains all the normal best practices and a variety of deployment capabilities that we would typically use in a standard application deployment. To customise it a little for this exercise, let's see how we can add some Helm templating parameters to it. For this, we'll add an additional label to the deployed pods. We're going to do this by adding an entry to the `matchLabels` and `labels` in the Deployment and Service object using the label `user: {{ .Values.myuserid }}`, and later use the `values.yaml` file to pass in a new value for the `myuserid` parameter. Whilst this particular example is not that complex, it demonstrates how we can pass simple values from the values file (and subsequently the command line) through to a Helm template that we can repeatedly deploy as many times as we want with different values. We'll see this in action later on in the lab.
+We can see that we already have a fairly standard Deployment resource pre-populated, and for the exercise of deploying our simple Python application, it is actually fairly well suited to leave it as it is as it contains all the normal best practices and a variety of deployment capabilities that we would typically use in a standard application deployment. 
 
-Add and entry to the end of the `spec.selector.matchLabels` list and a matching entry at the end of the `spec.selector.template.metadata.labels` list that looks like the following
-
-```
-user: {{ .Values.myuserid }}
-```
-
-The resulting code block would be this
+We need to adjust generated ports from 80 to 8080, but instead of just changing that hardcoded value we will use the templated value. Replace all `80` strings in `deployment.yaml` and `service.yaml` with `{{ .Values.service.port }}`. For example:
 
 ```
-spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      {{- include "python-app.selectorLabels" . | nindent 6 }}
-      user: {{ .Values.myuserid }}
-  template:
-    metadata:
-      labels:
-        {{- include "python-app.selectorLabels" . | nindent 8 }}
-        user: {{ .Values.myuserid }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
 ```
+
+will be changed to:
+
+```
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+```
+
+To further customise it for this exercise, let's see how we can add some Helm templating parameters to it. For this, we'll add an additional environment variable `NAME` to the deployed pods. We're going to do this by adding the following section:
+
+```
+          env:
+            - name: NAME
+              value: {{ .Values.name }}    
+```
+
+to the `deployment.yaml`. Make sure you are adding it on the same ident level as `readinessProbe` 
+The resulting code block would be this:
+
+```
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          env:
+            - name: NAME
+              value: {{ .Values.name }}   
+
+```
+ 
+ Later use the `values.yaml` file to pass in a new value for the `NAME` parameter. Whilst this particular example is not that complex, it demonstrates how we can pass simple values from the values file (and subsequently the command line) through to a Helm template that we can repeatedly deploy as many times as we want with different values. We'll see this in action later on in the lab.
 
 Also change the `image` section from
 
@@ -163,30 +183,9 @@ image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
 
 Ensure that the indentation matches up with the other list entries.
 
-We also need to add this selector to our `python-app/templates/service.yaml` `spec.selector`. The result looks like this
-
-```
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "python-app.fullname" . }}
-  labels:
-    {{- include "python-app.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
-  selector:
-    {{- include "python-app.selectorLabels" . | nindent 4 }}
-    user: {{ .Values.myuserid }}
-```
-
 The `values.yaml` file is contained in the root of the application directory, and defines the values available for templating within the Helm chart. 
 
-Edit the `python-app/values.yaml` file to add our new `myuserid` parameter and value. We're also going to modify some other parameter values in this file to deploy our simple Python application.
+Edit the `python-app/values.yaml` file to add our new `name` parameter and value. We're also going to modify some other parameter values in this file to deploy our simple Python application.
 
 We need to do the following
 
@@ -197,7 +196,7 @@ image:
   pullPolicy: IfNotPresent
   tag: v1
 ```
-3. Add the line `myuserid: ibmadmin` to the file on a new line.
+3. Add the line `name: World!!!` to the file on a new line.
 
 Once the changes have been made, our Helm application templates are now ready for testing and packaging.
 
@@ -205,7 +204,7 @@ Before packaging the application and deploying to OpenShift, it's a good idea to
 
 Run `helm lint` on your application directory to check for errors.
 
-With regards to this lab, we haven't edited a lot of content to allows us to easily make mistakes. But, for example, if you had made a mistake and missed the leading `.` from `.Values.myuserid`, the `helm lint` command would produce the following message
+With regards to this lab, we haven't edited a lot of content to allows us to easily make mistakes. But, for example, if you had made a mistake and missed the leading `.` from `.Values.name`, the `helm lint` command would produce the following message
 
 ```
 $ helm lint python-app/
@@ -228,14 +227,6 @@ $ helm lint python-app/
 
 This means our chart is ready to deploy to OpenShift.
 
-The deployed container image requires to be run with the root user, which requires the `anyuid` Security Context Constraint.
-
-To enable the use of the `anyuid` SCC, you would run the following command
-
-```
-oc adm policy add-scc-to-user anyuid -z default
-```
-
 Helm offers a `--dry-run` argument that allows you to run the installer on the chart, but not actually deploy anything. This is particularly useful with the `--debug` argument that will output the contents of all the generated Kubernetes resources to stdout so you can check the resources formatting before packaging. Used in conjunction with an overriding `values.yaml` you can simulate a user deployment with custom values and check to ensure the output is correct. 
 
 The `helm install` command uses the following syntax: `helm install [NAME] [CHART] [flags]`
@@ -257,7 +248,7 @@ NOTES:
 1. Get the application URL by running these commands:
   export POD_NAME=$(kubectl get pods --namespace lab09-helm3 -l "app.kubernetes.io/name=python-app,app.kubernetes.io/instance=my-python" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl port-forward $POD_NAME 8080:80
+  kubectl port-forward $POD_NAME 8080:8080
 ```
 
 So the application was deployed and we can see that the pods are now running in our project
@@ -285,6 +276,12 @@ For example, if we wanted to use a different image tag instead of `v1`, potentia
 
 ```
 $ helm install my-python-v1 python-app-0.1.0.tgz --set image.tag=latest
+```
+
+And if we would like to customize that `NAME` environment variable, we could install chart using the following
+
+```
+$ helm install my-python-v1 python-app-0.1.0.tgz --set name=Luca
 ```
 
 Once the application is deployed, we can check the image used in the pod spec
@@ -325,7 +322,7 @@ Containers:
     Container ID:   cri-o://be250c4bd6b6a87988c8f09246d7f2f9e9e3e130a7348bb813606c605b1281fc
     Image:          quay.io/lfloris/my-python:latest                                                                 <<<<<<<<<<<<<<<<<<< NEW IMAGE
     Image ID:       quay.io/lfloris/my-python@sha256:4256b771943b04a078bf4809f7d6741ad027b14bcf2afd1f09e27f9baeab87eb
-    Port:           80/TCP
+    Port:           8080/TCP
     Host Port:      0/TCP
     State:          Running
       Started:      Tue, 30 Jun 2020 15:28:19 -0700
@@ -363,6 +360,26 @@ Events:
 
 So now we have developed a working, reusable Helm3 based application.
 
+### Clean up
+
 When you're finished, clean up any resources created and delete the project.
+
+To find what helm releases are installed in your namespace, issue:
+
+```
+$ helm list
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+my-python       lab09-helm      1               2020-11-06 16:55:33.6011648 +0100 CET   deployed        python-app-0.1.1        1.16.0
+my-python-v1    lab09-helm      1               2020-11-06 17:09:15.8205854 +0100 CET   deployed        python-app-0.1.1        1.16.0
+```
+
+To remove helm realese issue `helm uninstall RELEASE_NAME` e.g. :
+
+```
+$ helm uninstall my-python-v1
+release "my-python-v1" uninstalled
+```
+
+You will notice that all resources created by helm are removed (deployment, service, serviceaccount).
 
 Lab complete. Please move on to [Wordpress Deployment with Helm3](helm-deployment-ex-2.md)
